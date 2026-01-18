@@ -18,7 +18,6 @@ import { ButtonComponent } from '@shared/components/ui/button.component';
   imports: [
     CommonModule,
     RouterLink,
-    CardComponent,
     BadgeComponent,
     LoaderComponent,
     ButtonComponent
