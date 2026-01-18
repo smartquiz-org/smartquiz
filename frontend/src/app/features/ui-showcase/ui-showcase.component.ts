@@ -63,7 +63,7 @@ import {
             <div class="flex flex-wrap gap-3">
               <ui-button [disabled]="true" testId="btn-disabled">Disabled</ui-button>
               <ui-button [loading]="true" testId="btn-loading">Loading</ui-button>
-              <ui-button variant="primary" fullWidth testId="btn-fullwidth">Full Width Button</ui-button>
+              <ui-button variant="primary" [fullWidth]="true" testId="btn-fullwidth">Full Width Button</ui-button>
             </div>
           </div>
         </div>
