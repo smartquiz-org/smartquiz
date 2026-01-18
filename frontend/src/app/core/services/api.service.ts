@@ -134,15 +134,7 @@ export interface CategoryStats {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
-  private baseUrl = '';
-
-  constructor() {
-    // Get backend URL from environment
-    if (typeof window !== 'undefined') {
-      // @ts-ignore
-      this.baseUrl = window.__env?.REACT_APP_BACKEND_URL || 'http://localhost:8080';
-    }
-  }
+  private baseUrl = environment.apiUrl;
 
   // Categories
   getCategories(): Observable<Category[]> {
