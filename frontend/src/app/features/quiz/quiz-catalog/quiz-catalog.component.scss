@@ -32,7 +32,7 @@
   @apply flex-1 pl-10 pr-4 py-2.5 bg-surface border border-border rounded-lg;
   @apply text-text-primary placeholder-text-secondary;
   @apply transition-all duration-200;
-  @apply focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20;
+  @apply focus:outline-none focus:border-primary focus:ring-2;
 }
 
 .search-button {
@@ -60,8 +60,12 @@
 .filter-chip {
   @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm;
   @apply bg-surface-variant text-text-secondary border border-transparent;
-  @apply hover:bg-primary/10 hover:text-primary transition-all duration-200;
-  @apply cursor-pointer;
+  @apply transition-all duration-200 cursor-pointer;
+  
+  &:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    @apply text-primary;
+  }
 
   &.active {
     @apply bg-primary text-white;
@@ -98,7 +102,10 @@
 
 .clear-filters {
   @apply inline-flex items-center gap-1 px-3 py-1 text-sm text-error;
-  @apply hover:bg-error/10 rounded-lg transition-colors;
+  @apply rounded-lg transition-colors;
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
 }
 
 .clear-icon {
@@ -141,8 +148,10 @@
 .quiz-card {
   @apply block bg-surface border border-border rounded-xl overflow-hidden;
   @apply transition-all duration-300;
-  @apply hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5;
-  @apply hover:-translate-y-1;
+  &:hover {
+    border-color: var(--primary);
+    @apply shadow-lg -translate-y-1;
+  }
 }
 
 .quiz-cover {
@@ -154,8 +163,8 @@
 }
 
 .cover-placeholder {
-  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
-  @apply flex items-center justify-center;
+  background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+  @apply w-full h-full flex items-center justify-center;
 }
 
 .cover-emoji {
@@ -228,5 +237,8 @@
 
 .load-more-button {
   @apply px-6 py-3 bg-surface-variant text-text-primary rounded-lg border border-border;
-  @apply hover:bg-primary hover:text-white hover:border-primary transition-all;
+  @apply transition-all;
+  &:hover {
+    @apply bg-primary text-white border-primary;
+  }
 }

@@ -4,7 +4,8 @@
 
 // Hero Section
 .hero-section {
-  @apply bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl p-8 md:p-12;
+  background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+  @apply rounded-2xl p-8 md:p-12;
 }
 
 .hero-content {
@@ -122,7 +123,10 @@
 .quiz-card {
   @apply block bg-surface border border-border rounded-xl overflow-hidden;
   @apply transition-all duration-300;
-  @apply hover:border-primary/50 hover:shadow-lg hover:-translate-y-1;
+  &:hover {
+    border-color: var(--primary);
+    @apply shadow-lg -translate-y-1;
+  }
 }
 
 .quiz-cover {
@@ -134,8 +138,8 @@
 }
 
 .cover-placeholder {
-  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
-  @apply flex items-center justify-center;
+  background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+  @apply w-full h-full flex items-center justify-center;
 }
 
 .cover-emoji {
@@ -182,7 +186,11 @@
 
 .action-card {
   @apply flex items-center gap-3 px-6 py-4 bg-surface border border-border rounded-xl;
-  @apply hover:border-primary/50 hover:bg-primary/5 transition-all;
+  @apply transition-all;
+  &:hover {
+    border-color: var(--primary);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
 }
 
 .action-icon {

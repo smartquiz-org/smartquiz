@@ -31,11 +31,13 @@
   @apply text-xs px-2 py-1 rounded-full;
 
   &.training {
-    @apply bg-primary/20 text-primary;
+    background-color: rgba(59, 130, 246, 0.2);
+    @apply text-primary;
   }
 
   &.exam {
-    @apply bg-warning/20 text-warning;
+    background-color: rgba(245, 158, 11, 0.2);
+    @apply text-warning;
   }
 }
 
@@ -48,7 +50,8 @@
   @apply text-text-primary font-mono;
 
   &.critical {
-    @apply bg-error/20 text-error animate-pulse;
+    background-color: rgba(239, 68, 68, 0.2);
+    @apply text-error animate-pulse;
   }
 }
 
@@ -131,18 +134,25 @@
 .answer-option {
   @apply w-full flex items-center gap-4 p-4 rounded-xl border border-border;
   @apply bg-surface text-left transition-all duration-200;
-  @apply hover:border-primary/50 hover:bg-primary/5;
+  
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
 
   &.answer-selected {
-    @apply border-primary bg-primary/10;
+    @apply border-primary;
+    background-color: rgba(59, 130, 246, 0.1);
   }
 
   &.answer-correct {
-    @apply border-success bg-success/10;
+    @apply border-success;
+    background-color: rgba(34, 197, 94, 0.1);
   }
 
   &.answer-incorrect {
-    @apply border-error bg-error/10;
+    @apply border-error;
+    background-color: rgba(239, 68, 68, 0.1);
   }
 
   &:disabled {
@@ -235,7 +245,8 @@
 
 // Question Navigator Overlay
 .question-nav-overlay {
-  @apply fixed inset-0 bg-black/50 z-50 flex items-end justify-center;
+  @apply fixed inset-0 z-50 flex items-end justify-center;
+  background-color: rgba(0, 0, 0, 0.5);
   @apply animate-fade-in;
 }
 
@@ -255,14 +266,18 @@
 .question-dot {
   @apply w-10 h-10 rounded-lg bg-surface-variant text-text-secondary;
   @apply flex items-center justify-center text-sm font-medium;
-  @apply hover:bg-primary/20 transition-colors;
+  @apply transition-colors;
+  &:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+  }
 
   &.current {
     @apply bg-primary text-white;
   }
 
   &.answered {
-    @apply bg-success/20 text-success;
+    background-color: rgba(34, 197, 94, 0.2);
+    @apply text-success;
   }
 }
 
@@ -282,6 +297,6 @@
   }
 
   &.answered {
-    @apply bg-success/30;
+    background-color: rgba(34, 197, 94, 0.3);
   }
 }

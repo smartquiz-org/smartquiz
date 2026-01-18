@@ -28,7 +28,10 @@
 .attempt-card {
   @apply block bg-surface border border-border rounded-xl p-4;
   @apply transition-all duration-200;
-  @apply hover:border-primary/50 hover:shadow-md;
+  &:hover {
+    border-color: var(--primary);
+    @apply shadow-md;
+  }
 }
 
 .attempt-main {
@@ -78,10 +81,12 @@
 
 .result-badge {
   @apply ml-auto w-10 h-10 rounded-full flex items-center justify-center;
-  @apply bg-error/20 text-error;
+  background-color: rgba(239, 68, 68, 0.2);
+  @apply text-error;
 
   &.passed {
-    @apply bg-success/20 text-success;
+    background-color: rgba(34, 197, 94, 0.2);
+    @apply text-success;
   }
 }
 

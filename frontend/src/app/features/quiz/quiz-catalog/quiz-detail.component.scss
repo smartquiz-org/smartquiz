@@ -50,8 +50,8 @@
 }
 
 .cover-placeholder {
-  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
-  @apply flex items-center justify-center;
+  background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+  @apply w-full h-full flex items-center justify-center;
 }
 
 .cover-emoji {
@@ -99,7 +99,8 @@
 }
 
 .tag {
-  @apply px-2 py-1 text-xs text-primary bg-primary/10 rounded-full;
+  @apply px-2 py-1 text-xs text-primary rounded-full;
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
 // Mode Section
@@ -118,11 +119,13 @@
 .mode-card {
   @apply relative bg-surface border border-border rounded-xl p-5 text-left;
   @apply transition-all duration-200;
-  @apply hover:border-primary/50;
+  &:hover {
+    border-color: var(--primary);
+  }
 
   &.selected {
     @apply border-primary;
-    background: rgba(59, 130, 246, 0.05);
+    background-color: rgba(59, 130, 246, 0.05);
   }
 }
 
