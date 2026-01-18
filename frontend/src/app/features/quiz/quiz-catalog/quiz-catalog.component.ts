@@ -21,8 +21,7 @@ import { LoaderComponent } from '@shared/components/ui/loader.component';
     RouterLink,
     FormsModule,
     BadgeComponent,
-    LoaderComponent,
-    CardComponent
+    LoaderComponent
   ],
   templateUrl: './quiz-catalog.component.html',
   styleUrl: './quiz-catalog.component.scss'
