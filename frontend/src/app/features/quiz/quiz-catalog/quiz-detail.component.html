@@ -1,0 +1,217 @@
+<div class="quiz-detail-container" data-testid="quiz-detail">
+  <!-- Back Button -->
+  <button class="back-button" (click)="goBack()" data-testid="back-button">
+    <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    Retour au catalogue
+  </button>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-state">
+      <ui-loader size="lg" text="Chargement du quiz..." [centered]="true" />
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="error-state">
+      <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <p class="error-text">{{ error() }}</p>
+      <button class="retry-button" (click)="goBack()">Retour au catalogue</button>
+    </div>
+  }
+
+  <!-- Quiz Content -->
+  @if (quiz() && !loading()) {
+    <div class="quiz-content">
+      <!-- Quiz Header Card -->
+      <ui-card variant="default" testId="quiz-header-card">
+        <div class="quiz-header">
+          <!-- Cover -->
+          <div class="quiz-cover">
+            @if (quiz()?.imageUrl) {
+              <img [src]="quiz()?.imageUrl" [alt]="quiz()?.title" class="cover-image" />
+            } @else {
+              <div class="cover-placeholder">
+                <span class="cover-emoji">🧠</span>
+              </div>
+            }
+          </div>
+          
+          <!-- Info -->
+          <div class="quiz-info">
+            <div class="quiz-badges">
+              <ui-badge [variant]="getDifficultyVariant(quiz()!.difficulty)">
+                {{ getDifficultyLabel(quiz()!.difficulty) }}
+              </ui-badge>
+              <span class="quiz-category">{{ quiz()?.categoryName }}</span>
+            </div>
+            
+            <h1 class="quiz-title">{{ quiz()?.title }}</h1>
+            <p class="quiz-description">{{ quiz()?.description }}</p>
+            
+            <div class="quiz-stats">
+              <div class="stat-item">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ quiz()?.questionCount }} questions</span>
+              </div>
+              <div class="stat-item">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ quiz()?.timeLimit }} minutes</span>
+              </div>
+              <div class="stat-item">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Score minimum: {{ quiz()?.passingScore }}%</span>
+              </div>
+              @if (quiz()?.attemptCount && quiz()!.attemptCount > 0) {
+                <div class="stat-item stat-score">
+                  <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                  <span>{{ quiz()?.attemptCount }} tentatives • {{ quiz()?.averageScore | number:'1.0-0' }}% moyenne</span>
+                </div>
+              }
+            </div>
+
+            <!-- Tags -->
+            @if (quiz()?.tags && quiz()!.tags.length > 0) {
+              <div class="quiz-tags">
+                @for (tag of quiz()?.tags; track tag) {
+                  <span class="tag">#{{ tag }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Mode Selection -->
+      <section class="mode-section">
+        <h2 class="section-title">Choisissez votre mode</h2>
+        
+        <div class="mode-grid">
+          <!-- Training Mode -->
+          <button 
+            class="mode-card"
+            [class.selected]="selectedMode === 'TRAINING'"
+            (click)="selectMode('TRAINING')"
+            data-testid="mode-training">
+            <div class="mode-content">
+              <span class="mode-icon">🎯</span>
+              <div class="mode-info">
+                <h3 class="mode-title">Mode Entraînement</h3>
+                <p class="mode-description">
+                  Feedback immédiat après chaque réponse. Idéal pour apprendre.
+                </p>
+                <ul class="mode-features">
+                  <li class="feature feature-positive">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Voir la correction immédiatement
+                  </li>
+                  <li class="feature feature-positive">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Explications détaillées
+                  </li>
+                  <li class="feature feature-positive">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Temps flexible
+                  </li>
+                </ul>
+              </div>
+              @if (selectedMode === 'TRAINING') {
+                <div class="mode-check">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+              }
+            </div>
+          </button>
+
+          <!-- Exam Mode -->
+          <button 
+            class="mode-card"
+            [class.selected]="selectedMode === 'EXAM'"
+            (click)="selectMode('EXAM')"
+            data-testid="mode-exam">
+            <div class="mode-content">
+              <span class="mode-icon">📝</span>
+              <div class="mode-info">
+                <h3 class="mode-title">Mode Examen</h3>
+                <p class="mode-description">
+                  Conditions réelles d'examen. Résultats à la fin uniquement.
+                </p>
+                <ul class="mode-features">
+                  <li class="feature feature-warning">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Timer: {{ quiz()?.timeLimit }} minutes
+                  </li>
+                  <li class="feature feature-neutral">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Pas de feedback pendant
+                  </li>
+                  <li class="feature feature-positive">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Résultats détaillés à la fin
+                  </li>
+                </ul>
+              </div>
+              @if (selectedMode === 'EXAM') {
+                <div class="mode-check">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+              }
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Start Button -->
+      <div class="start-section">
+        <ui-button 
+          variant="primary" 
+          size="lg"
+          [loading]="sessionLoading()"
+          [disabled]="sessionLoading()"
+          (clicked)="startQuiz()"
+          testId="start-quiz-button">
+          @if (sessionLoading()) {
+            Démarrage...
+          } @else {
+            Démarrer le quiz
+          }
+        </ui-button>
+      </div>
+    </div>
+  }
+</div>

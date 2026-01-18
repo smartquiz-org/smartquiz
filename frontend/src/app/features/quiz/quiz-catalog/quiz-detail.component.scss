@@ -1,0 +1,184 @@
+.quiz-detail-container {
+  @apply max-w-4xl mx-auto space-y-6 animate-fade-in;
+}
+
+// Back Button
+.back-button {
+  @apply inline-flex items-center gap-2 text-text-secondary;
+  @apply hover:text-text-primary transition-colors;
+}
+
+.back-icon {
+  @apply w-5 h-5;
+}
+
+// Loading & Error
+.loading-state,
+.error-state {
+  @apply py-16 text-center;
+}
+
+.error-icon {
+  @apply w-16 h-16 mx-auto text-error opacity-50 mb-4;
+}
+
+.error-text {
+  @apply text-text-secondary mb-4;
+}
+
+.retry-button {
+  @apply px-4 py-2 bg-primary text-white rounded-lg;
+  @apply hover:bg-primary-hover transition-colors;
+}
+
+// Quiz Content
+.quiz-content {
+  @apply space-y-8;
+}
+
+// Header Card
+.quiz-header {
+  @apply flex flex-col md:flex-row gap-6;
+}
+
+.quiz-cover {
+  @apply w-full md:w-64 h-48 rounded-lg overflow-hidden flex-shrink-0;
+}
+
+.cover-image {
+  @apply w-full h-full object-cover;
+}
+
+.cover-placeholder {
+  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
+  @apply flex items-center justify-center;
+}
+
+.cover-emoji {
+  @apply text-6xl;
+}
+
+.quiz-info {
+  @apply flex-1 space-y-4;
+}
+
+.quiz-badges {
+  @apply flex items-center gap-3;
+}
+
+.quiz-category {
+  @apply text-text-secondary text-sm;
+}
+
+.quiz-title {
+  @apply text-3xl font-bold text-text-primary;
+}
+
+.quiz-description {
+  @apply text-text-secondary leading-relaxed;
+}
+
+.quiz-stats {
+  @apply flex flex-wrap gap-4 text-sm;
+}
+
+.stat-item {
+  @apply inline-flex items-center gap-2 text-text-secondary;
+}
+
+.stat-icon {
+  @apply w-5 h-5;
+}
+
+.stat-score {
+  @apply text-success;
+}
+
+.quiz-tags {
+  @apply flex flex-wrap gap-2 pt-2;
+}
+
+.tag {
+  @apply px-2 py-1 text-xs text-primary bg-primary/10 rounded-full;
+}
+
+// Mode Section
+.mode-section {
+  @apply space-y-4;
+}
+
+.section-title {
+  @apply text-xl font-semibold text-text-primary;
+}
+
+.mode-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.mode-card {
+  @apply relative bg-surface border border-border rounded-xl p-5 text-left;
+  @apply transition-all duration-200;
+  @apply hover:border-primary/50;
+
+  &.selected {
+    @apply border-primary;
+    background: rgba(59, 130, 246, 0.05);
+  }
+}
+
+.mode-content {
+  @apply flex items-start gap-4;
+}
+
+.mode-icon {
+  @apply text-3xl flex-shrink-0;
+}
+
+.mode-info {
+  @apply flex-1;
+}
+
+.mode-title {
+  @apply font-semibold text-lg text-text-primary;
+}
+
+.mode-description {
+  @apply text-text-secondary text-sm mt-1;
+}
+
+.mode-features {
+  @apply mt-3 space-y-2;
+}
+
+.feature {
+  @apply flex items-center gap-2 text-sm;
+
+  &.feature-positive {
+    @apply text-success;
+  }
+
+  &.feature-warning {
+    @apply text-warning;
+  }
+
+  &.feature-neutral {
+    @apply text-text-secondary;
+  }
+}
+
+.feature-icon {
+  @apply w-4 h-4 flex-shrink-0;
+}
+
+.mode-check {
+  @apply w-6 h-6 text-primary flex-shrink-0;
+
+  svg {
+    @apply w-full h-full;
+  }
+}
+
+// Start Section
+.start-section {
+  @apply flex justify-center pt-4;
+}
