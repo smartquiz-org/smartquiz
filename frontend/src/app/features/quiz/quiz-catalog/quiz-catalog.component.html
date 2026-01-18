@@ -1,0 +1,208 @@
+<div class="catalog-container" data-testid="quiz-catalog">
+  <!-- Header -->
+  <header class="catalog-header">
+    <div class="header-content">
+      <h1 class="catalog-title">Catalogue des Quiz</h1>
+      <p class="catalog-subtitle">Explorez nos quiz et testez vos connaissances</p>
+    </div>
+    
+    <!-- Search -->
+    <div class="search-container">
+      <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input 
+        type="text" 
+        placeholder="Rechercher un quiz..."
+        class="search-input"
+        [(ngModel)]="searchInput"
+        (keyup.enter)="onSearch()"
+        data-testid="search-input"
+      />
+      <button 
+        class="search-button" 
+        (click)="onSearch()"
+        data-testid="search-button">
+        Rechercher
+      </button>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <section class="filters-section">
+    <!-- Categories -->
+    <div class="filter-group">
+      <span class="filter-label">Catégorie:</span>
+      <div class="filter-chips">
+        <button 
+          class="filter-chip"
+          [class.active]="!catalogState.filters().categoryId"
+          (click)="onCategorySelect(null)"
+          data-testid="filter-all">
+          Tous
+        </button>
+        @for (category of catalogState.categories(); track category.id) {
+          <button 
+            class="filter-chip"
+            [class.active]="catalogState.filters().categoryId === category.id"
+            (click)="onCategorySelect(category.id)"
+            [attr.data-testid]="'filter-category-' + category.id">
+            <span class="chip-icon">{{ category.icon }}</span>
+            {{ category.name }}
+            <span class="chip-count">({{ category.quizCount }})</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Difficulty -->
+    <div class="filter-group">
+      <span class="filter-label">Difficulté:</span>
+      <div class="filter-chips">
+        <button 
+          class="filter-chip"
+          [class.active]="!catalogState.filters().difficulty"
+          (click)="onDifficultySelect(null)">
+          Toutes
+        </button>
+        <button 
+          class="filter-chip difficulty-easy"
+          [class.active]="catalogState.filters().difficulty === 'EASY'"
+          (click)="onDifficultySelect('EASY')">
+          Facile
+        </button>
+        <button 
+          class="filter-chip difficulty-medium"
+          [class.active]="catalogState.filters().difficulty === 'MEDIUM'"
+          (click)="onDifficultySelect('MEDIUM')">
+          Moyen
+        </button>
+        <button 
+          class="filter-chip difficulty-hard"
+          [class.active]="catalogState.filters().difficulty === 'HARD'"
+          (click)="onDifficultySelect('HARD')">
+          Difficile
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Filters Summary -->
+    @if (catalogState.filters().categoryId || catalogState.filters().difficulty || catalogState.filters().search) {
+      <div class="active-filters">
+        <span class="active-label">Filtres actifs:</span>
+        <button class="clear-filters" (click)="onClearFilters()" data-testid="clear-filters">
+          <svg class="clear-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          Effacer tout
+        </button>
+      </div>
+    }
+  </section>
+
+  <!-- Results Info -->
+  <div class="results-info">
+    <span class="results-count">
+      {{ catalogState.totalElements() }} quiz trouvé(s)
+    </span>
+  </div>
+
+  <!-- Loading State -->
+  @if (catalogState.loading()) {
+    <div class="loading-container">
+      <ui-loader size="lg" text="Chargement des quiz..." [centered]="true" />
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (catalogState.error()) {
+    <div class="error-container">
+      <div class="error-message">
+        <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <p>{{ catalogState.error() }}</p>
+        <button class="retry-button" (click)="catalogState.loadQuizzes()">Réessayer</button>
+      </div>
+    </div>
+  }
+
+  <!-- Quiz Grid -->
+  @if (!catalogState.loading() && !catalogState.error()) {
+    <div class="quiz-grid" data-testid="quiz-grid">
+      @for (quiz of catalogState.quizzes(); track quiz.id) {
+        <a [routerLink]="['/quizzes', quiz.id]" class="quiz-card" [attr.data-testid]="'quiz-card-' + quiz.id">
+          <!-- Cover Image -->
+          <div class="quiz-cover">
+            @if (quiz.imageUrl) {
+              <img [src]="quiz.imageUrl" [alt]="quiz.title" class="cover-image" />
+            } @else {
+              <div class="cover-placeholder">
+                <span class="cover-emoji">🧠</span>
+              </div>
+            }
+            <div class="cover-overlay">
+              <ui-badge [variant]="getDifficultyVariant(quiz.difficulty)" size="sm">
+                {{ getDifficultyLabel(quiz.difficulty) }}
+              </ui-badge>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="quiz-content">
+            <span class="quiz-category">{{ quiz.categoryName }}</span>
+            <h3 class="quiz-title">{{ quiz.title }}</h3>
+            <p class="quiz-description">{{ quiz.description }}</p>
+            
+            <div class="quiz-meta">
+              <span class="meta-item">
+                <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ quiz.questionCount }} questions
+              </span>
+              <span class="meta-item">
+                <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ quiz.timeLimit }} min
+              </span>
+              @if (quiz.attemptCount > 0) {
+                <span class="meta-item meta-score">
+                  <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                  </svg>
+                  {{ quiz.averageScore | number:'1.0-0' }}%
+                </span>
+              }
+            </div>
+          </div>
+        </a>
+      } @empty {
+        <div class="empty-state" data-testid="empty-state">
+          <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="empty-title">Aucun quiz trouvé</p>
+          <p class="empty-subtitle">Essayez de modifier vos filtres</p>
+          <button class="empty-action" (click)="onClearFilters()">Voir tous les quiz</button>
+        </div>
+      }
+    </div>
+
+    <!-- Load More -->
+    @if (catalogState.hasMorePages()) {
+      <div class="load-more-container">
+        <button class="load-more-button" (click)="onLoadMore()" data-testid="load-more">
+          Charger plus de quiz
+        </button>
+      </div>
+    }
+  }
+</div>

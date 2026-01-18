@@ -1,0 +1,232 @@
+.catalog-container {
+  @apply space-y-6 animate-fade-in;
+}
+
+// Header
+.catalog-header {
+  @apply flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6;
+}
+
+.header-content {
+  @apply flex-1;
+}
+
+.catalog-title {
+  @apply text-3xl font-bold text-text-primary;
+}
+
+.catalog-subtitle {
+  @apply text-text-secondary mt-1;
+}
+
+// Search
+.search-container {
+  @apply relative flex items-center gap-2 max-w-lg w-full;
+}
+
+.search-icon {
+  @apply absolute left-3 w-5 h-5 text-text-secondary pointer-events-none;
+}
+
+.search-input {
+  @apply flex-1 pl-10 pr-4 py-2.5 bg-surface border border-border rounded-lg;
+  @apply text-text-primary placeholder-text-secondary;
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20;
+}
+
+.search-button {
+  @apply px-4 py-2.5 bg-primary text-white rounded-lg font-medium;
+  @apply hover:bg-primary-hover transition-colors;
+}
+
+// Filters
+.filters-section {
+  @apply space-y-4 p-4 bg-surface rounded-xl border border-border;
+}
+
+.filter-group {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.filter-label {
+  @apply text-sm font-medium text-text-secondary min-w-20;
+}
+
+.filter-chips {
+  @apply flex flex-wrap gap-2;
+}
+
+.filter-chip {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm;
+  @apply bg-surface-variant text-text-secondary border border-transparent;
+  @apply hover:bg-primary/10 hover:text-primary transition-all duration-200;
+  @apply cursor-pointer;
+
+  &.active {
+    @apply bg-primary text-white;
+  }
+
+  &.difficulty-easy.active {
+    @apply bg-success;
+  }
+
+  &.difficulty-medium.active {
+    @apply bg-warning;
+  }
+
+  &.difficulty-hard.active {
+    @apply bg-error;
+  }
+}
+
+.chip-icon {
+  @apply text-base;
+}
+
+.chip-count {
+  @apply text-xs opacity-75;
+}
+
+.active-filters {
+  @apply flex items-center gap-3 pt-3 border-t border-border;
+}
+
+.active-label {
+  @apply text-sm text-text-secondary;
+}
+
+.clear-filters {
+  @apply inline-flex items-center gap-1 px-3 py-1 text-sm text-error;
+  @apply hover:bg-error/10 rounded-lg transition-colors;
+}
+
+.clear-icon {
+  @apply w-4 h-4;
+}
+
+// Results
+.results-info {
+  @apply flex items-center justify-between;
+}
+
+.results-count {
+  @apply text-sm text-text-secondary;
+}
+
+// Loading & Error
+.loading-container,
+.error-container {
+  @apply py-16;
+}
+
+.error-message {
+  @apply text-center;
+}
+
+.error-icon {
+  @apply w-16 h-16 mx-auto text-error opacity-50 mb-4;
+}
+
+.retry-button {
+  @apply mt-4 px-4 py-2 bg-primary text-white rounded-lg;
+  @apply hover:bg-primary-hover transition-colors;
+}
+
+// Quiz Grid
+.quiz-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.quiz-card {
+  @apply block bg-surface border border-border rounded-xl overflow-hidden;
+  @apply transition-all duration-300;
+  @apply hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5;
+  @apply hover:-translate-y-1;
+}
+
+.quiz-cover {
+  @apply relative h-40 overflow-hidden;
+}
+
+.cover-image {
+  @apply w-full h-full object-cover;
+}
+
+.cover-placeholder {
+  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
+  @apply flex items-center justify-center;
+}
+
+.cover-emoji {
+  @apply text-5xl;
+}
+
+.cover-overlay {
+  @apply absolute top-3 left-3;
+}
+
+.quiz-content {
+  @apply p-4 space-y-2;
+}
+
+.quiz-category {
+  @apply text-xs text-text-secondary uppercase tracking-wide;
+}
+
+.quiz-title {
+  @apply font-semibold text-lg text-text-primary;
+  @apply line-clamp-1;
+}
+
+.quiz-description {
+  @apply text-text-secondary text-sm line-clamp-2;
+}
+
+.quiz-meta {
+  @apply flex flex-wrap items-center gap-4 pt-3 text-sm text-text-secondary;
+}
+
+.meta-item {
+  @apply inline-flex items-center gap-1;
+}
+
+.meta-icon {
+  @apply w-4 h-4;
+}
+
+.meta-score {
+  @apply text-success;
+}
+
+// Empty State
+.empty-state {
+  @apply col-span-full text-center py-16;
+}
+
+.empty-icon {
+  @apply w-20 h-20 mx-auto text-text-secondary opacity-30 mb-4;
+}
+
+.empty-title {
+  @apply text-xl font-semibold text-text-primary;
+}
+
+.empty-subtitle {
+  @apply text-text-secondary mt-1;
+}
+
+.empty-action {
+  @apply mt-4 px-4 py-2 bg-primary text-white rounded-lg;
+  @apply hover:bg-primary-hover transition-colors;
+}
+
+// Load More
+.load-more-container {
+  @apply flex justify-center pt-6;
+}
+
+.load-more-button {
+  @apply px-6 py-3 bg-surface-variant text-text-primary rounded-lg border border-border;
+  @apply hover:bg-primary hover:text-white hover:border-primary transition-all;
+}
