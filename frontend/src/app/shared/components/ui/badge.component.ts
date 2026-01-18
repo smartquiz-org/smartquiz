@@ -13,7 +13,7 @@ export type QuizStatus = 'draft' | 'published' | 'archived';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <span [class]="badgeClasses" [attr.data-testid]="testId">
+    <span [class]="badgeClasses" [style]="badgeStyles" [attr.data-testid]="testId">
       @if (icon) {
         <span class="mr-1">{{ icon }}</span>
       }
@@ -40,23 +40,6 @@ export class BadgeComponent {
 
   get badgeClasses(): string {
     const baseClasses = 'inline-flex items-center font-medium rounded-full';
-    
-    // Determine variant based on difficulty or status if provided
-    let effectiveVariant = this.variant;
-    if (this.difficulty) {
-      effectiveVariant = this.getDifficultyVariant();
-    } else if (this.status) {
-      effectiveVariant = this.getStatusVariant();
-    }
-
-    const variantClasses: Record<BadgeVariant, string> = {
-      default: 'bg-surface-variant text-text-secondary',
-      primary: 'bg-primary/20 text-primary',
-      success: 'bg-success/20 text-success',
-      warning: 'bg-warning/20 text-warning',
-      error: 'bg-error/20 text-error',
-      info: 'bg-blue-500/20 text-blue-400'
-    };
 
     const sizeClasses: Record<BadgeSize, string> = {
       sm: 'px-2 py-0.5 text-xs',
@@ -64,7 +47,27 @@ export class BadgeComponent {
       lg: 'px-3 py-1.5 text-base'
     };
 
-    return `${baseClasses} ${variantClasses[effectiveVariant]} ${sizeClasses[this.size]}`;
+    return `${baseClasses} ${sizeClasses[this.size]}`;
+  }
+
+  get badgeStyles(): Record<string, string> {
+    let effectiveVariant = this.variant;
+    if (this.difficulty) {
+      effectiveVariant = this.getDifficultyVariant();
+    } else if (this.status) {
+      effectiveVariant = this.getStatusVariant();
+    }
+
+    const variantStyles: Record<BadgeVariant, Record<string, string>> = {
+      default: { 'background-color': 'var(--surface-variant)', 'color': 'var(--text-secondary)' },
+      primary: { 'background-color': 'rgba(59, 130, 246, 0.2)', 'color': 'var(--primary)' },
+      success: { 'background-color': 'rgba(34, 197, 94, 0.2)', 'color': 'var(--success)' },
+      warning: { 'background-color': 'rgba(245, 158, 11, 0.2)', 'color': 'var(--warning)' },
+      error: { 'background-color': 'rgba(239, 68, 68, 0.2)', 'color': 'var(--error)' },
+      info: { 'background-color': 'rgba(59, 130, 246, 0.2)', 'color': '#60a5fa' }
+    };
+
+    return variantStyles[effectiveVariant];
   }
 
   get difficultyLabel(): string {
@@ -79,8 +82,8 @@ export class BadgeComponent {
   get statusLabel(): string {
     const labels: Record<QuizStatus, string> = {
       draft: 'Brouillon',
-      published: 'Publié',
-      archived: 'Archivé'
+      published: 'Publi\u00e9',
+      archived: 'Archiv\u00e9'
     };
     return this.status ? labels[this.status] : '';
   }

@@ -8,7 +8,7 @@ export type AlertVariant = 'success' | 'error' | 'warning' | 'info';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div [class]="alertClasses" role="alert" [attr.data-testid]="testId">
+    <div [class]="alertClasses" [style]="alertStyles" role="alert" [attr.data-testid]="testId">
       <div class="flex items-start">
         <!-- Icon -->
         <div class="flex-shrink-0 mr-3">
@@ -72,16 +72,18 @@ export class AlertComponent {
   @Output() dismissed = new EventEmitter<void>();
 
   get alertClasses(): string {
-    const baseClasses = 'p-4 rounded-lg border';
-    
-    const variantClasses: Record<AlertVariant, string> = {
-      success: 'bg-success/10 border-success/30 text-success',
-      error: 'bg-error/10 border-error/30 text-error',
-      warning: 'bg-warning/10 border-warning/30 text-warning',
-      info: 'bg-primary/10 border-primary/30 text-primary'
+    return 'p-4 rounded-lg border';
+  }
+
+  get alertStyles(): Record<string, string> {
+    const variantStyles: Record<AlertVariant, Record<string, string>> = {
+      success: { 'background-color': 'rgba(34, 197, 94, 0.1)', 'border-color': 'rgba(34, 197, 94, 0.3)', 'color': 'var(--success)' },
+      error: { 'background-color': 'rgba(239, 68, 68, 0.1)', 'border-color': 'rgba(239, 68, 68, 0.3)', 'color': 'var(--error)' },
+      warning: { 'background-color': 'rgba(245, 158, 11, 0.1)', 'border-color': 'rgba(245, 158, 11, 0.3)', 'color': 'var(--warning)' },
+      info: { 'background-color': 'rgba(59, 130, 246, 0.1)', 'border-color': 'rgba(59, 130, 246, 0.3)', 'color': 'var(--primary)' }
     };
 
-    return `${baseClasses} ${variantClasses[this.variant]}`;
+    return variantStyles[this.variant];
   }
 
   dismiss(): void {

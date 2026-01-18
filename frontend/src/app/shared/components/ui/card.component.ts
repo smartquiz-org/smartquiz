@@ -21,12 +21,21 @@ export type CardVariant = 'default' | 'elevated' | 'outlined' | 'interactive';
         <ng-content />
       </div>
       @if (hasFooter) {
-        <div class="px-4 py-3 border-t border-border bg-surface-variant/50 rounded-b-xl">
+        <div class="px-4 py-3 border-t border-border rounded-b-xl" style="background-color: rgba(42, 42, 42, 0.5)">
           <ng-content select="[card-footer]" />
         </div>
       }
     </div>
-  `
+  `,
+  styles: [`
+    :host {
+      display: block;
+    }
+    .card-interactive:hover {
+      border-color: var(--primary);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.05);
+    }
+  `]
 })
 export class CardComponent {
   @Input() variant: CardVariant = 'default';
@@ -41,9 +50,9 @@ export class CardComponent {
     
     const variantClasses: Record<CardVariant, string> = {
       default: 'border border-border',
-      elevated: 'shadow-lg shadow-black/10',
+      elevated: 'shadow-lg',
       outlined: 'border-2 border-border',
-      interactive: 'border border-border hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 cursor-pointer'
+      interactive: 'border border-border card-interactive cursor-pointer'
     };
 
     return `${baseClasses} ${variantClasses[this.variant]}`;

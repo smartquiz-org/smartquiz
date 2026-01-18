@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, signal } from '@angular/core';
+import { Component, Input, forwardRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 
@@ -28,12 +28,11 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
         (input)="onInput($event)"
         (blur)="onBlur()"
         (focus)="focused.set(true)"
-        class="peer w-full px-4 pt-5 pb-2 bg-surface border rounded-lg text-text-primary placeholder-transparent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+        class="peer w-full px-4 pt-5 pb-2 bg-surface border rounded-lg text-text-primary placeholder-transparent transition-all duration-200 focus:outline-none focus:ring-2"
         [class.border-border]="!error"
         [class.focus:border-primary]="!error"
         [class.border-error]="error"
         [class.focus:border-error]="error"
-        [class.focus:ring-error/20]="error"
       />
       <label
         [for]="inputId"

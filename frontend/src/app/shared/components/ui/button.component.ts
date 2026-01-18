@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -23,7 +23,19 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
       }
       <ng-content />
     </button>
-  `
+  `,
+  styles: [`
+    :host {
+      display: inline-block;
+    }
+    :host(.full-width) {
+      display: block;
+      width: 100%;
+    }
+    :host(.full-width) button {
+      width: 100%;
+    }
+  `]
 })
 export class ButtonComponent {
   @Input() variant: ButtonVariant = 'primary';
@@ -44,7 +56,7 @@ export class ButtonComponent {
       secondary: 'bg-surface-variant text-text-primary border border-border hover:bg-surface focus:ring-border',
       outline: 'bg-transparent text-primary border border-primary hover:bg-primary hover:text-white focus:ring-primary',
       ghost: 'bg-transparent text-text-secondary hover:bg-surface-variant hover:text-text-primary focus:ring-border',
-      danger: 'bg-error text-white hover:bg-error/90 focus:ring-error'
+      danger: 'bg-error text-white focus:ring-error'
     };
 
     const sizeClasses: Record<ButtonSize, string> = {
