@@ -1,9 +1,13 @@
 import { Component, Input, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { QuizRepository } from '../services/quiz.repository';
 import { QuizAttempt, AnswerResult } from '../models';
-import { ButtonComponent, CardComponent, LoaderComponent, BadgeComponent, AlertComponent } from '../../../shared/components/ui';
+import { ButtonComponent } from '@shared/components/ui/button.component';
+import { CardComponent } from '@shared/components/ui/card.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { AlertComponent } from '@shared/components/ui/alert.component';
 
 /**
  * Smart Component: Quiz Results Page
