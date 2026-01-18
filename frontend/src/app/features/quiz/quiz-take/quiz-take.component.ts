@@ -2,7 +2,11 @@ import { Component, Input, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuizSessionService } from '../services/quiz-session.service';
-import { ButtonComponent, CardComponent, LoaderComponent, AlertComponent, BadgeComponent } from '../../../shared/components/ui';
+import { ButtonComponent } from '@shared/components/ui/button.component';
+import { CardComponent } from '@shared/components/ui/card.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
+import { AlertComponent } from '@shared/components/ui/alert.component';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
 
 /**
  * Smart Component: Quiz Taking Interface
