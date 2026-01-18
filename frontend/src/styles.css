@@ -97,8 +97,11 @@
   }
 
   .card-hover {
-    @apply card hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5;
-    @apply cursor-pointer;
+    @apply card cursor-pointer;
+  }
+  
+  .card-hover:hover {
+    @apply border-primary shadow-lg;
   }
 
   /* Badge */
