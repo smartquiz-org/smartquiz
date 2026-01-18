@@ -1,9 +1,12 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { QuizRepository } from '../../quiz/services/quiz.repository';
-import { QuizSummary, UserStats } from '../../quiz/models';
-import { CardComponent, BadgeComponent, LoaderComponent, ButtonComponent } from '../../../shared/components/ui';
+import { QuizRepository } from '@features/quiz/services/quiz.repository';
+import { QuizSummary, UserStats } from '@features/quiz/models';
+import { CardComponent } from '@shared/components/ui/card.component';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
+import { ButtonComponent } from '@shared/components/ui/button.component';
 
 /**
  * Smart Component: Dashboard
