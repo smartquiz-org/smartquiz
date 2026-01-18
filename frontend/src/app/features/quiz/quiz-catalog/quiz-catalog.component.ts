@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CatalogStateService } from '../services/catalog-state.service';
-import { BadgeComponent, LoaderComponent, CardComponent } from '../../../shared/components/ui';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
 
 /**
  * Smart Component: Quiz Catalog Container
