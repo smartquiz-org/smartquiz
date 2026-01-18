@@ -84,14 +84,8 @@ import { RouterLink } from '@angular/router';
     </footer>
   `,
   styles: [`
-    $coral: #FF6B6B;
-    $dark: #2D3436;
-    $gray: #636E72;
-    $light-gray: #B2BEC3;
-    $cream: #FFFAF5;
-
     .landing-footer {
-      background: $dark;
+      background: #2D3436;
       color: white;
       padding: 80px 24px 32px;
     }
@@ -106,40 +100,40 @@ import { RouterLink } from '@angular/router';
       grid-template-columns: 1.5fr 2fr;
       gap: 80px;
       padding-bottom: 48px;
-      border-bottom: 1px solid rgba(white, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-      @media (max-width: 968px) {
+    @media (max-width: 968px) {
+      .footer-main {
         grid-template-columns: 1fr;
         gap: 48px;
       }
     }
 
-    .footer-brand {
-      .logo {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        margin-bottom: 20px;
+    .footer-brand .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
 
-        .logo-icon {
-          font-size: 32px;
-        }
+    .footer-brand .logo-icon {
+      font-size: 32px;
+    }
 
-        .logo-text {
-          font-size: 28px;
-          font-weight: 700;
-          color: white;
-        }
-      }
+    .footer-brand .logo-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+    }
 
-      .brand-description {
-        color: $light-gray;
-        font-size: 15px;
-        line-height: 1.7;
-        margin-bottom: 24px;
-        max-width: 320px;
-      }
+    .brand-description {
+      color: #B2BEC3;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 320px;
     }
 
     .social-links {
@@ -151,54 +145,54 @@ import { RouterLink } from '@angular/router';
       width: 40px;
       height: 40px;
       border-radius: 10px;
-      background: rgba(white, 0.1);
+      background: rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       transition: all 0.3s ease;
+    }
 
-      svg {
-        width: 20px;
-        height: 20px;
-      }
+    .social-link svg {
+      width: 20px;
+      height: 20px;
+    }
 
-      &:hover {
-        background: $coral;
-        transform: translateY(-2px);
-      }
+    .social-link:hover {
+      background: #FF6B6B;
+      transform: translateY(-2px);
     }
 
     .footer-links {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 40px;
+    }
 
-      @media (max-width: 640px) {
+    @media (max-width: 640px) {
+      .footer-links {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    .link-group {
-      h4 {
-        color: white;
-        font-weight: 600;
-        font-size: 16px;
-        margin-bottom: 20px;
-      }
+    .link-group h4 {
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
 
-      a {
-        display: block;
-        color: $light-gray;
-        text-decoration: none;
-        font-size: 14px;
-        padding: 8px 0;
-        transition: color 0.3s ease;
+    .link-group a {
+      display: block;
+      color: #B2BEC3;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+    }
 
-        &:hover {
-          color: $coral;
-        }
-      }
+    .link-group a:hover {
+      color: #FF6B6B;
     }
 
     .footer-bottom {
@@ -206,8 +200,10 @@ import { RouterLink } from '@angular/router';
       justify-content: space-between;
       align-items: center;
       padding-top: 32px;
+    }
 
-      @media (max-width: 640px) {
+    @media (max-width: 640px) {
+      .footer-bottom {
         flex-direction: column;
         gap: 16px;
         text-align: center;
@@ -215,24 +211,24 @@ import { RouterLink } from '@angular/router';
     }
 
     .copyright {
-      color: $light-gray;
+      color: #B2BEC3;
       font-size: 14px;
     }
 
     .legal-links {
       display: flex;
       gap: 24px;
+    }
 
-      a {
-        color: $light-gray;
-        text-decoration: none;
-        font-size: 14px;
-        transition: color 0.3s ease;
+    .legal-links a {
+      color: #B2BEC3;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
 
-        &:hover {
-          color: $coral;
-        }
-      }
+    .legal-links a:hover {
+      color: #FF6B6B;
     }
   `]
 })
