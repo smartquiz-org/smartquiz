@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CatalogStateService } from '../services/catalog-state.service';
 import { QuizSessionService } from '../services/quiz-session.service';
-import { BadgeComponent, ButtonComponent, CardComponent, LoaderComponent } from '../../../shared/components/ui';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { ButtonComponent } from '@shared/components/ui/button.component';
+import { CardComponent } from '@shared/components/ui/card.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
 import { AttemptMode } from '../models';
 
 /**
