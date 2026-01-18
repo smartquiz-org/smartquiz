@@ -1,0 +1,165 @@
+<div class="results-container" data-testid="quiz-results">
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-state">
+      <ui-loader size="lg" text="Chargement des résultats..." [centered]="true" />
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error() && !loading()) {
+    <div class="error-state">
+      <ui-alert variant="error">{{ error() }}</ui-alert>
+      <ui-button variant="secondary" (clicked)="goToCatalog()" class="mt-4">
+        Retour au catalogue
+      </ui-button>
+    </div>
+  }
+
+  <!-- Results -->
+  @if (attempt() && !loading()) {
+    <div class="results-content">
+      <!-- Header Card -->
+      <ui-card variant="elevated" testId="results-card">
+        <div class="results-header">
+          <!-- Score Circle -->
+          <div class="score-section">
+            <div class="score-circle" [class]="scoreClass()">
+              <span class="score-value">{{ scorePercentage() | number:'1.0-0' }}%</span>
+              <span class="score-label">Score</span>
+            </div>
+            
+            <div class="result-badge" [class.passed]="passed()" [class.failed]="!passed()">
+              @if (passed()) {
+                <svg class="badge-icon" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Réussi !
+              } @else {
+                <svg class="badge-icon" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                </svg>
+                Non réussi
+              }
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-section">
+            <h1 class="quiz-title">{{ attempt()?.quizTitle }}</h1>
+            
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-value">{{ correctCount() }}/{{ totalQuestions() }}</span>
+                <span class="stat-label">Réponses correctes</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ attempt()?.score }}/{{ attempt()?.totalPoints }}</span>
+                <span class="stat-label">Points obtenus</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ timeFormatted() }}</span>
+                <span class="stat-label">Temps passé</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">
+                  @if (attempt()?.mode === 'TRAINING') {
+                    🎯 Entraînement
+                  } @else {
+                    📝 Examen
+                  }
+                </span>
+                <span class="stat-label">Mode</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Actions -->
+      <div class="actions-section">
+        <ui-button variant="primary" (clicked)="retryQuiz()" testId="retry-button">
+          <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Recommencer ce quiz
+        </ui-button>
+        
+        <ui-button variant="secondary" (clicked)="goToCatalog()">
+          <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Autre quiz
+        </ui-button>
+        
+        <ui-button variant="ghost" (clicked)="goToDashboard()">
+          <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Dashboard
+        </ui-button>
+      </div>
+
+      <!-- Review Section -->
+      <section class="review-section">
+        <button class="review-toggle" (click)="toggleReview()" data-testid="toggle-review">
+          <span>Revoir les réponses</span>
+          <svg 
+            class="toggle-icon" 
+            [class.rotated]="showReview()"
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        @if (showReview()) {
+          <div class="review-list" data-testid="review-list">
+            @for (result of attempt()?.results; track result.questionId; let i = $index) {
+              <div class="review-item" [class.correct]="result.correct" [class.incorrect]="!result.correct">
+                <div class="review-header">
+                  <span class="review-number">Question {{ i + 1 }}</span>
+                  <ui-badge [variant]="result.correct ? 'success' : 'error'" size="sm">
+                    {{ result.correct ? 'Correct' : 'Incorrect' }}
+                    (+{{ result.pointsEarned }} pts)
+                  </ui-badge>
+                </div>
+                
+                <p class="review-question">{{ result.questionText }}</p>
+                
+                <div class="review-answers">
+                  <div class="answer-row">
+                    <span class="answer-label">Votre réponse :</span>
+                    <span class="your-answer" [class.wrong]="!result.correct">
+                      @if (result.selectedAnswerIds.length === 0) {
+                        <em>Aucune réponse</em>
+                      } @else {
+                        {{ result.selectedAnswerIds.join(', ') }}
+                      }
+                    </span>
+                  </div>
+                  @if (!result.correct) {
+                    <div class="answer-row">
+                      <span class="answer-label">Bonne réponse :</span>
+                      <span class="correct-answer">{{ result.correctAnswerIds.join(', ') }}</span>
+                    </div>
+                  }
+                </div>
+                
+                @if (result.explanation) {
+                  <div class="review-explanation">
+                    <strong>Explication :</strong> {{ result.explanation }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </section>
+    </div>
+  }
+</div>

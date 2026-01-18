@@ -1,0 +1,180 @@
+.results-container {
+  @apply max-w-3xl mx-auto animate-fade-in;
+}
+
+// Loading & Error
+.loading-state,
+.error-state {
+  @apply py-16 text-center;
+}
+
+// Results Content
+.results-content {
+  @apply space-y-6;
+}
+
+// Header Card
+.results-header {
+  @apply flex flex-col md:flex-row gap-8 items-center;
+}
+
+.score-section {
+  @apply flex flex-col items-center gap-4;
+}
+
+.score-circle {
+  @apply w-36 h-36 rounded-full flex flex-col items-center justify-center;
+  @apply border-8;
+
+  &.score-excellent {
+    @apply border-success bg-success/10;
+    .score-value { @apply text-success; }
+  }
+
+  &.score-good {
+    @apply border-primary bg-primary/10;
+    .score-value { @apply text-primary; }
+  }
+
+  &.score-average {
+    @apply border-warning bg-warning/10;
+    .score-value { @apply text-warning; }
+  }
+
+  &.score-poor {
+    @apply border-error bg-error/10;
+    .score-value { @apply text-error; }
+  }
+}
+
+.score-value {
+  @apply text-4xl font-bold;
+}
+
+.score-label {
+  @apply text-sm text-text-secondary;
+}
+
+.result-badge {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
+
+  &.passed {
+    @apply bg-success/20 text-success;
+  }
+
+  &.failed {
+    @apply bg-error/20 text-error;
+  }
+}
+
+.badge-icon {
+  @apply w-5 h-5;
+}
+
+// Stats Section
+.stats-section {
+  @apply flex-1 text-center md:text-left;
+}
+
+.quiz-title {
+  @apply text-2xl font-bold text-text-primary mb-6;
+}
+
+.stats-grid {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.stat-item {
+  @apply p-4 bg-surface-variant rounded-lg;
+}
+
+.stat-value {
+  @apply block text-xl font-bold text-text-primary;
+}
+
+.stat-label {
+  @apply text-sm text-text-secondary;
+}
+
+// Actions
+.actions-section {
+  @apply flex flex-wrap justify-center gap-4;
+}
+
+.action-icon {
+  @apply w-5 h-5 mr-2;
+}
+
+// Review Section
+.review-section {
+  @apply bg-surface border border-border rounded-xl overflow-hidden;
+}
+
+.review-toggle {
+  @apply w-full flex items-center justify-between p-4 text-text-primary font-medium;
+  @apply hover:bg-surface-variant transition-colors;
+}
+
+.toggle-icon {
+  @apply w-5 h-5 transition-transform duration-200;
+
+  &.rotated {
+    @apply rotate-180;
+  }
+}
+
+.review-list {
+  @apply divide-y divide-border;
+}
+
+.review-item {
+  @apply p-4 space-y-3;
+
+  &.correct {
+    @apply border-l-4 border-l-success;
+  }
+
+  &.incorrect {
+    @apply border-l-4 border-l-error;
+  }
+}
+
+.review-header {
+  @apply flex items-center justify-between;
+}
+
+.review-number {
+  @apply font-medium text-text-primary;
+}
+
+.review-question {
+  @apply text-text-primary;
+}
+
+.review-answers {
+  @apply space-y-2 text-sm;
+}
+
+.answer-row {
+  @apply flex flex-wrap gap-2;
+}
+
+.answer-label {
+  @apply text-text-secondary;
+}
+
+.your-answer {
+  @apply text-text-primary;
+
+  &.wrong {
+    @apply text-error line-through;
+  }
+}
+
+.correct-answer {
+  @apply text-success font-medium;
+}
+
+.review-explanation {
+  @apply p-3 bg-surface-variant rounded-lg text-sm text-text-secondary;
+}

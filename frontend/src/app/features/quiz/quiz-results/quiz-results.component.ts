@@ -1,72 +1,100 @@
-import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, Input, inject, OnInit, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { QuizRepository } from '../services/quiz.repository';
+import { QuizAttempt, AnswerResult } from '../models';
+import { ButtonComponent, CardComponent, LoaderComponent, BadgeComponent, AlertComponent } from '../../../shared/components/ui';
 
+/**
+ * Smart Component: Quiz Results Page
+ * Displays final score and review of all answers
+ */
 @Component({
   selector: 'app-quiz-results',
   standalone: true,
-  imports: [RouterLink],
-  template: `
-    <div class="max-w-3xl mx-auto space-y-8 animate-fade-in">
-      <!-- Score Card -->
-      <div class="card text-center py-8">
-        <div class="text-6xl mb-4">🎉</div>
-        <h1 class="text-2xl font-semibold mb-2">Félicitations !</h1>
-        
-        <!-- Score Circle -->
-        <div class="w-32 h-32 mx-auto my-6 rounded-full border-8 border-success flex items-center justify-center">
-          <span class="text-4xl font-bold text-success">85%</span>
-        </div>
-        
-        <p class="text-text-secondary">170 / 200 points</p>
-        <p class="text-xl font-semibold text-success mt-2">Excellent !</p>
-        
-        <!-- Stats -->
-        <div class="grid grid-cols-3 gap-4 mt-8">
-          <div>
-            <div class="text-2xl font-bold text-success">17</div>
-            <div class="text-sm text-text-secondary">Correctes</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold text-error">3</div>
-            <div class="text-sm text-text-secondary">Incorrectes</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold">12:30</div>
-            <div class="text-sm text-text-secondary">Temps</div>
-          </div>
-        </div>
-        
-        <!-- Comparison -->
-        <div class="mt-8 p-4 bg-surface-variant rounded-lg">
-          <div class="flex justify-between text-sm">
-            <span>Votre score</span>
-            <span class="font-semibold text-success">85%</span>
-          </div>
-          <div class="progress-bar my-2">
-            <div class="progress-fill bg-success" style="width: 85%"></div>
-          </div>
-          <div class="flex justify-between text-sm text-text-secondary">
-            <span>Score moyen</span>
-            <span>75.5%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button class="btn-secondary">
-          📝 Revoir les réponses
-        </button>
-        <a routerLink="/quizzes/1" class="btn-secondary text-center">
-          🔄 Recommencer
-        </a>
-        <a routerLink="/quizzes" class="btn-primary text-center">
-          📚 Catalogue
-        </a>
-      </div>
-    </div>
-  `
+  imports: [
+    CommonModule,
+    RouterLink,
+    ButtonComponent,
+    CardComponent,
+    LoaderComponent,
+    BadgeComponent,
+    AlertComponent
+  ],
+  templateUrl: './quiz-results.component.html',
+  styleUrl: './quiz-results.component.scss'
 })
-export class QuizResultsComponent {
+export class QuizResultsComponent implements OnInit {
   @Input() attemptId!: string;
+
+  private readonly repository = inject(QuizRepository);
+  private readonly router = inject(Router);
+
+  // State signals
+  readonly attempt = signal<QuizAttempt | null>(null);
+  readonly loading = signal(true);
+  readonly error = signal<string | null>(null);
+  readonly showReview = signal(false);
+
+  // Computed signals
+  readonly scorePercentage = computed(() => this.attempt()?.percentage ?? 0);
+  readonly passed = computed(() => this.attempt()?.passed ?? false);
+  readonly correctCount = computed(() => {
+    return this.attempt()?.results?.filter(r => r.correct).length ?? 0;
+  });
+  readonly totalQuestions = computed(() => this.attempt()?.totalQuestions ?? 0);
+
+  readonly scoreClass = computed(() => {
+    const pct = this.scorePercentage();
+    if (pct >= 80) return 'score-excellent';
+    if (pct >= 60) return 'score-good';
+    if (pct >= 40) return 'score-average';
+    return 'score-poor';
+  });
+
+  readonly timeFormatted = computed(() => {
+    const seconds = this.attempt()?.timeSpent ?? 0;
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
+  });
+
+  ngOnInit(): void {
+    if (this.attemptId) {
+      this.loadResults();
+    }
+  }
+
+  private loadResults(): void {
+    this.loading.set(true);
+    this.repository.getAttempt(this.attemptId).subscribe({
+      next: (result) => {
+        this.attempt.set(result);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Impossible de charger les r\u00e9sultats');
+        this.loading.set(false);
+      }
+    });
+  }
+
+  toggleReview(): void {
+    this.showReview.update(v => !v);
+  }
+
+  retryQuiz(): void {
+    const quizId = this.attempt()?.quizId;
+    if (quizId) {
+      this.router.navigate(['/quizzes', quizId]);
+    }
+  }
+
+  goToCatalog(): void {
+    this.router.navigate(['/quizzes']);
+  }
+
+  goToDashboard(): void {
+    this.router.navigate(['/']);
+  }
 }
