@@ -1,0 +1,73 @@
+name: Backend - Pull Request Checks
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Apply code formatting
+        run: ./gradlew spotlessApply --no-daemon
+      
+      - name: Commit formatting changes
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git diff --quiet || (git add -A && git commit -m "style: apply Spotless formatting [skip ci]" && git push)
+
+      - name: Build with Gradle
+        run: ./gradlew build -x spotlessCheck --no-daemon
+
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
+      - name: Build Docker image (no push)
+        run: |
+          docker build -f docker/Dockerfile -t smartquiz-backend:pr-${{ github.event.pull_request.number }} .
+
+      - name: Comment PR with build status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const message = status === 'success' 
+              ? '✅ Backend build and tests passed!' 
+              : '❌ Backend build or tests failed.';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Backend Build Status\n\n${message}\n\n**Commit:** ${context.sha.substring(0, 7)}`
+            });

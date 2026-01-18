@@ -6,8 +6,9 @@ Plateforme d'apprentissage interactive permettant aux utilisateurs de tester et 
 
 ```
 smartquiz/
-├── backend/          # API Spring Boot 4 + MongoDB (Gradle)
-├── frontend/         # Application Angular 20+ SSR
+├── backend/              # API Spring Boot 4 + MongoDB (Gradle)
+├── frontend/             # Application Angular 20+ SSR
+├── .github/workflows/    # CI/CD GitHub Actions
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
@@ -24,8 +25,9 @@ smartquiz/
 - **Build** : Angular CLI
 
 ### Backend (`/backend`)
-- **Framework** : Spring Boot 4
-- **Build** : Gradle (Kotlin DSL)
+- **Runtime** : Java 21 (requis par Spring Boot 4)
+- **Framework** : Spring Boot 4.0
+- **Build** : Gradle 8+ (Groovy DSL)
 - **Database** : MongoDB Atlas
 - **Security** : Spring Security + JWT (Keycloak)
 - **Documentation** : SpringDoc OpenAPI (Swagger)
@@ -40,7 +42,7 @@ smartquiz/
 
 ### Prérequis
 - Node.js 20+
-- Java 21+
+- **Java 21** (obligatoire pour Spring Boot 4)
 - Docker & Docker Compose
 - MongoDB Atlas account (ou MongoDB local)
 
@@ -54,7 +56,7 @@ npm run start
 
 # Backend
 cd backend
-./mvnw spring-boot:run
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
 ### Docker
