@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.0'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'com.smartquiz'
@@ -103,14 +102,4 @@ tasks.named('bootJar') {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.compilerArgs += ['-parameters']
-}
-
-// Spotless code formatting
-spotless {
-    java {
-        googleJavaFormat()
-        removeUnusedImports()
-        target 'src/**/*.java'
-        targetExclude 'build/**/*.java'
-    }
 }
