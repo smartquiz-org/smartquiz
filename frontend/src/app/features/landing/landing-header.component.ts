@@ -59,12 +59,6 @@ import { CommonModule } from '@angular/common';
     </header>
   `,
   styles: [`
-    $coral: #FF6B6B;
-    $coral-dark: #E55A5A;
-    $dark: #2D3436;
-    $gray: #636E72;
-    $cream: #FFFAF5;
-
     .landing-header {
       position: fixed;
       top: 0;
@@ -73,12 +67,12 @@ import { CommonModule } from '@angular/common';
       z-index: 100;
       background: transparent;
       transition: all 0.3s ease;
+    }
 
-      &.scrolled {
-        background: rgba(white, 0.95);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-      }
+    .landing-header.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     }
 
     .nav-container {
@@ -95,91 +89,95 @@ import { CommonModule } from '@angular/common';
       align-items: center;
       gap: 10px;
       text-decoration: none;
+    }
 
-      .logo-icon {
-        font-size: 28px;
-      }
+    .logo-icon {
+      font-size: 28px;
+    }
 
-      .logo-text {
-        font-size: 24px;
-        font-weight: 700;
-        color: $coral;
-      }
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FF6B6B;
     }
 
     .nav-links {
       display: flex;
       gap: 32px;
+    }
 
-      @media (max-width: 968px) {
+    @media (max-width: 968px) {
+      .nav-links {
         display: none;
       }
     }
 
     .nav-link {
-      color: $dark;
+      color: #2D3436;
       text-decoration: none;
       font-weight: 500;
       font-size: 15px;
       transition: color 0.3s ease;
       position: relative;
+    }
 
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: $coral;
-        transition: width 0.3s ease;
-      }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #FF6B6B;
+      transition: width 0.3s ease;
+    }
 
-      &:hover {
-        color: $coral;
+    .nav-link:hover {
+      color: #FF6B6B;
+    }
 
-        &::after {
-          width: 100%;
-        }
-      }
+    .nav-link:hover::after {
+      width: 100%;
     }
 
     .nav-actions {
       display: flex;
       gap: 12px;
+    }
 
-      @media (max-width: 968px) {
+    @media (max-width: 968px) {
+      .nav-actions {
         display: none;
       }
     }
 
     .btn-nav-secondary {
       padding: 10px 20px;
-      color: $dark;
+      color: #2D3436;
       font-weight: 500;
       font-size: 14px;
       text-decoration: none;
       transition: color 0.3s ease;
+    }
 
-      &:hover {
-        color: $coral;
-      }
+    .btn-nav-secondary:hover {
+      color: #FF6B6B;
     }
 
     .btn-nav-primary {
       padding: 10px 24px;
-      background: $coral;
+      background: #FF6B6B;
       color: white;
       font-weight: 600;
       font-size: 14px;
       border-radius: 10px;
       text-decoration: none;
       transition: all 0.3s ease;
+    }
 
-      &:hover {
-        background: $coral-dark;
-        transform: translateY(-1px);
-      }
+    .btn-nav-primary:hover {
+      background: #E55A5A;
+      transform: translateY(-1px);
     }
 
     .mobile-menu-btn {
@@ -189,14 +187,16 @@ import { CommonModule } from '@angular/common';
       border: none;
       background: transparent;
       cursor: pointer;
+    }
 
-      svg {
-        width: 24px;
-        height: 24px;
-        color: $dark;
-      }
+    .mobile-menu-btn svg {
+      width: 24px;
+      height: 24px;
+      color: #2D3436;
+    }
 
-      @media (max-width: 968px) {
+    @media (max-width: 968px) {
+      .mobile-menu-btn {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -208,8 +208,10 @@ import { CommonModule } from '@angular/common';
       padding: 24px;
       background: white;
       border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
 
-      @media (max-width: 968px) {
+    @media (max-width: 968px) {
+      .mobile-menu {
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -218,15 +220,15 @@ import { CommonModule } from '@angular/common';
 
     .mobile-link {
       padding: 12px 0;
-      color: $dark;
+      color: #2D3436;
       text-decoration: none;
       font-weight: 500;
       font-size: 16px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
 
-      &:hover {
-        color: $coral;
-      }
+    .mobile-link:hover {
+      color: #FF6B6B;
     }
 
     .mobile-actions {
@@ -239,32 +241,32 @@ import { CommonModule } from '@angular/common';
     .btn-mobile-secondary {
       padding: 14px 24px;
       text-align: center;
-      color: $dark;
+      color: #2D3436;
       font-weight: 500;
       text-decoration: none;
       border: 2px solid rgba(0, 0, 0, 0.1);
       border-radius: 10px;
       transition: all 0.3s ease;
+    }
 
-      &:hover {
-        border-color: $coral;
-        color: $coral;
-      }
+    .btn-mobile-secondary:hover {
+      border-color: #FF6B6B;
+      color: #FF6B6B;
     }
 
     .btn-mobile-primary {
       padding: 14px 24px;
       text-align: center;
-      background: $coral;
+      background: #FF6B6B;
       color: white;
       font-weight: 600;
       text-decoration: none;
       border-radius: 10px;
       transition: all 0.3s ease;
+    }
 
-      &:hover {
-        background: $coral-dark;
-      }
+    .btn-mobile-primary:hover {
+      background: #E55A5A;
     }
   `]
 })
