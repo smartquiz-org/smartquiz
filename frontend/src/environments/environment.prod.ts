@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: '/api',
+  apiUrl: '',
   appName: 'SmartQuiz',
   appVersion: '1.0.0'
 };
