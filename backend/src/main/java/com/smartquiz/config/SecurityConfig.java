@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,8 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/info").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 // Public API endpoints - GET for quizzes catalog
-                .requestMatchers("GET", "/api/quizzes/**").permitAll()
-                .requestMatchers("GET", "/api/quizzes").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/quizzes/**", "/api/quizzes", "/api/categories/**", "/api/categories").permitAll()
                 // All other requests require authentication
                 .anyRequest().authenticated()
             )
