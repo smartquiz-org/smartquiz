@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables - Dark Theme (default) */
+:root {
+  --background: #0a0a0a;
+  --surface: #1a1a1a;
+  --surface-variant: #2a2a2a;
+  --primary: #60a5fa;
+  --primary-hover: #3b82f6;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --border: #2a2a2a;
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --background: #ffffff;
+  --surface: #f9fafb;
+  --surface-variant: #f3f4f6;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-background text-text-primary;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer components {
+  /* Floating Label Input */
+  .input-group {
+    @apply relative;
+  }
+
+  .floating-input {
+    @apply w-full px-3 pt-5 pb-2 border rounded-lg;
+    @apply bg-surface border-border text-text-primary;
+    @apply transition-all duration-200 ease-in-out;
+    @apply focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20;
+  }
+
+  .floating-label {
+    @apply absolute left-3 top-1/2 -translate-y-1/2;
+    @apply text-text-secondary pointer-events-none;
+    @apply transition-all duration-200 ease-in-out;
+    @apply bg-surface px-1;
+  }
+
+  .floating-input:focus ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    @apply top-0 text-xs text-primary;
+  }
+
+  /* Button Variants */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-white;
+    @apply hover:bg-primary-hover;
+    @apply focus:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface-variant text-text-primary border border-border;
+    @apply hover:bg-surface;
+  }
+
+  .btn-outline {
+    @apply btn bg-transparent text-primary border border-primary;
+    @apply hover:bg-primary hover:text-white;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-surface border border-border rounded-xl p-4;
+    @apply transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5;
+    @apply cursor-pointer;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-success/20 text-success;
+  }
+
+  .badge-error {
+    @apply badge bg-error/20 text-error;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning/20 text-warning;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary/20 text-primary;
+  }
+
+  /* Quiz specific */
+  .answer-option {
+    @apply p-4 rounded-lg border border-border cursor-pointer;
+    @apply transition-all duration-200;
+    @apply hover:border-primary/50 hover:bg-surface-variant;
+  }
+
+  .answer-option.selected {
+    @apply border-primary bg-primary/10;
+  }
+
+  .answer-option.correct {
+    @apply border-success bg-success/10 text-success;
+  }
+
+  .answer-option.incorrect {
+    @apply border-error bg-error/10 text-error;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply w-full h-2 bg-surface-variant rounded-full overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-primary transition-all duration-300 ease-out;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-400;
+  }
+}

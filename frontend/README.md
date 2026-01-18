@@ -4,10 +4,10 @@ Application Angular 20+ SSR pour la plateforme SmartQuiz.
 
 ## 🛠️ Stack
 
-- **Angular 20+** avec SSR
-- **Standalone Components**
-- **Signals** (State Management)
-- **TailwindCSS**
+- **Angular 20** avec SSR (Server-Side Rendering)
+- **Standalone Components** (pas de NgModules)
+- **Signals** pour le state management
+- **TailwindCSS 3.4** avec Dark/Light themes
 - **Lucide Icons**
 
 ## 📁 Structure
@@ -17,26 +17,29 @@ frontend/
 ├── src/
 │   ├── app/
 │   │   ├── core/                # Services singleton, guards, interceptors
-│   │   │   ├── api/
-│   │   │   ├── guards/
-│   │   │   └── interceptors/
-│   │   ├── shared/              # Composants, pipes, directives réutilisables
-│   │   │   ├── components/
-│   │   │   │   └── ui/          # Button, Input, Card, Badge, etc.
-│   │   │   ├── pipes/
-│   │   │   └── directives/
-│   │   ├── features/            # Modules fonctionnels
-│   │   │   ├── quiz/
-│   │   │   │   ├── quiz-catalog/
-│   │   │   │   ├── quiz-take/
-│   │   │   │   └── quiz-results/
+│   │   │   └── services/
+│   │   │       └── theme.service.ts
+│   │   ├── shared/              # Composants réutilisables
+│   │   │   └── components/ui/
+│   │   ├── features/            # Pages fonctionnelles
 │   │   │   ├── dashboard/
-│   │   │   └── history/
-│   │   ├── layouts/             # Header, Footer, Sidebar
+│   │   │   ├── history/
+│   │   │   └── quiz/
+│   │   │       ├── quiz-catalog/
+│   │   │       ├── quiz-take/
+│   │   │       └── quiz-results/
+│   │   ├── layouts/
+│   │   │   ├── header.component.ts
+│   │   │   └── footer.component.ts
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts
 │   │   └── app.routes.ts
 │   ├── assets/
 │   ├── environments/
-│   └── styles.scss
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.css
+├── server.ts
 ├── angular.json
 ├── package.json
 ├── tailwind.config.js
@@ -48,34 +51,65 @@ frontend/
 
 ### Prérequis
 - Node.js 20+
-- npm ou pnpm
+- npm 10+
+
+### Installation
+
+```bash
+npm install
+```
 
 ### Développement
 
 ```bash
-# Installation
-npm install
-
-# Dev server
-npm run start
+# Dev server (port 4200)
+npm start
 
 # Build SSR
 npm run build
 
-# Serve SSR
-npm run serve:ssr:smartquiz
+# Serve SSR (port 4000)
+npm run serve:ssr
 ```
 
 ## 🎨 Design System
 
-- **Dark theme** par défaut
-- **Light theme** disponible
-- **Floating labels** sur les inputs
-- **Lucide Icons** pour l'iconographie
+### Themes
 
-### Thèmes
+- **Dark mode** (défaut) : `data-theme="dark"`
+- **Light mode** : `data-theme="light"`
 
-Toggle via le header. Préférence sauvegardée en localStorage.
+Toggle automatique avec persistence localStorage.
+
+### CSS Classes disponibles
+
+```css
+/* Buttons */
+.btn-primary
+.btn-secondary
+.btn-outline
+
+/* Cards */
+.card
+.card-hover
+
+/* Badges */
+.badge-success
+.badge-error
+.badge-warning
+.badge-primary
+
+/* Inputs */
+.floating-input
+.floating-label
+.input-group
+
+/* Quiz specific */
+.answer-option
+.answer-option.selected
+.answer-option.correct
+.answer-option.incorrect
+```
 
 ## 🐳 Docker
 
@@ -87,6 +121,13 @@ docker build -t smartquiz-frontend .
 docker run -p 4000:4000 smartquiz-frontend
 ```
 
-## 📖 Documentation
+## 📖 Routes
 
-Voir [smartquiz-specifications](https://github.com/smartquiz-org/smartquiz-specifications) pour le design system complet.
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `/` | DashboardComponent | Page d'accueil |
+| `/quizzes` | QuizCatalogComponent | Catalogue des quiz |
+| `/quizzes/:id` | QuizDetailComponent | Détails + sélection mode |
+| `/quiz/:attemptId` | QuizTakeComponent | Interface de quiz |
+| `/results/:attemptId` | QuizResultsComponent | Résultats |
+| `/history` | HistoryComponent | Historique des tentatives |
