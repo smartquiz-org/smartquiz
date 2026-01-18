@@ -1,9 +1,17 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // Home / Dashboard
+  // Landing Page (Home)
   {
     path: '',
+    loadComponent: () => import('./features/landing/landing.component')
+      .then(m => m.LandingComponent),
+    title: 'SmartQuiz - Apprenez en vous amusant'
+  },
+  
+  // Dashboard
+  {
+    path: 'dashboard',
     loadComponent: () => import('./features/dashboard/dashboard.component')
       .then(m => m.DashboardComponent),
     title: 'SmartQuiz - Dashboard'
