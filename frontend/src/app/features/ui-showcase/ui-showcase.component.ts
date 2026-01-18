@@ -1,14 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {
-  ButtonComponent,
-  InputComponent,
-  CardComponent,
-  BadgeComponent,
-  AlertComponent,
-  LoaderComponent
-} from '../../shared/components/ui';
+import { ButtonComponent } from '@shared/components/ui/button.component';
+import { InputComponent } from '@shared/components/ui/input.component';
+import { CardComponent } from '@shared/components/ui/card.component';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { AlertComponent } from '@shared/components/ui/alert.component';
+import { LoaderComponent } from '@shared/components/ui/loader.component';
 
 @Component({
   selector: 'app-ui-showcase',
