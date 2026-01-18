@@ -18,7 +18,6 @@ import { AlertComponent } from '@shared/components/ui/alert.component';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     ButtonComponent,
     CardComponent,
     LoaderComponent,
