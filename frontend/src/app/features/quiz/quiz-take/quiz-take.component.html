@@ -1,0 +1,234 @@
+<div class="quiz-take-container" data-testid="quiz-take">
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading-state">
+      <ui-loader size="lg" text="Chargement de la session..." [centered]="true" />
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error() && !loading()) {
+    <div class="error-state">
+      <ui-alert variant="error" [dismissible]="false">
+        {{ error() }}
+      </ui-alert>
+      <ui-button variant="secondary" (clicked)="onQuitQuiz()" class="mt-4">
+        Retour au catalogue
+      </ui-button>
+    </div>
+  }
+
+  <!-- Quiz Interface -->
+  @if (attempt() && currentQuestion() && !loading()) {
+    <div class="quiz-interface">
+      <!-- Top Bar -->
+      <header class="quiz-header">
+        <div class="header-left">
+          <h1 class="quiz-title">{{ attempt()?.quizTitle }}</h1>
+          <span class="quiz-mode">
+            @if (isTrainingMode()) {
+              <span class="mode-badge training">🎯 Entraînement</span>
+            } @else {
+              <span class="mode-badge exam">📝 Examen</span>
+            }
+          </span>
+        </div>
+        
+        <div class="header-right">
+          <!-- Timer -->
+          @if (attempt()?.timeLimit && attempt()!.timeLimit > 0) {
+            <div class="timer" [class.critical]="isTimeCritical()" data-testid="timer">
+              <svg class="timer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span class="timer-value">{{ formattedTime() }}</span>
+            </div>
+          }
+          
+          <!-- Quit Button -->
+          <button class="quit-button" (click)="onQuitQuiz()" data-testid="quit-button">
+            <svg class="quit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress()"></div>
+        </div>
+        <div class="progress-text">
+          Question {{ currentQuestionIndex() + 1 }} / {{ totalQuestions() }}
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="question-section">
+        <ui-card variant="default" testId="question-card">
+          <!-- Question Header -->
+          <div class="question-header">
+            <span class="question-number">Question {{ currentQuestionIndex() + 1 }}</span>
+            <ui-badge variant="info" size="sm">
+              {{ getQuestionTypeLabel(currentQuestion()!.type) }}
+            </ui-badge>
+            <span class="question-points">{{ currentQuestion()?.points }} pts</span>
+          </div>
+
+          <!-- Question Text -->
+          <div class="question-content">
+            <p class="question-text">{{ currentQuestion()?.text }}</p>
+            
+            @if (currentQuestion()?.imageUrl) {
+              <img [src]="currentQuestion()?.imageUrl" alt="Question image" class="question-image" />
+            }
+          </div>
+
+          <!-- Answers -->
+          <div class="answers-container">
+            @if (currentQuestion()?.type === 'MULTIPLE_CHOICE') {
+              <p class="answer-hint">Sélectionnez toutes les bonnes réponses</p>
+            }
+            
+            <div class="answers-list">
+              @for (answer of currentQuestion()?.answers; track answer.id) {
+                <button 
+                  class="answer-option" 
+                  [class]="getAnswerClass(answer.id)"
+                  [disabled]="showFeedback()"
+                  (click)="onSelectAnswer(answer.id)"
+                  [attr.data-testid]="'answer-' + answer.id">
+                  <div class="answer-marker">
+                    @if (currentQuestion()?.type === 'MULTIPLE_CHOICE') {
+                      <div class="checkbox" [class.checked]="isAnswerSelected(answer.id)">
+                        @if (isAnswerSelected(answer.id)) {
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                          </svg>
+                        }
+                      </div>
+                    } @else {
+                      <div class="radio" [class.checked]="isAnswerSelected(answer.id)">
+                        @if (isAnswerSelected(answer.id)) {
+                          <div class="radio-dot"></div>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <span class="answer-text">{{ answer.text }}</span>
+                  
+                  @if (answer.imageUrl) {
+                    <img [src]="answer.imageUrl" alt="Answer image" class="answer-image" />
+                  }
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Feedback (Training Mode) -->
+          @if (showFeedback() && lastFeedback()) {
+            <div class="feedback-section" data-testid="feedback">
+              <ui-alert [variant]="lastFeedback()!.correct ? 'success' : 'error'">
+                <strong>{{ lastFeedback()!.correct ? 'Correct !' : 'Incorrect' }}</strong>
+                <span class="feedback-points">(+{{ lastFeedback()!.pointsEarned }} pts)</span>
+              </ui-alert>
+              
+              @if (lastFeedback()?.explanation) {
+                <div class="explanation">
+                  <h4 class="explanation-title">Explication</h4>
+                  <p class="explanation-text">{{ lastFeedback()?.explanation }}</p>
+                </div>
+              }
+            </div>
+          }
+        </ui-card>
+      </div>
+
+      <!-- Navigation -->
+      <footer class="quiz-footer">
+        <div class="nav-left">
+          @if (isExamMode()) {
+            <ui-button 
+              variant="secondary" 
+              [disabled]="currentQuestionIndex() === 0"
+              (clicked)="onPreviousQuestion()">
+              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+              Précédent
+            </ui-button>
+          }
+          
+          <button class="question-nav-toggle" (click)="toggleQuestionNav()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+            Questions
+          </button>
+        </div>
+
+        <div class="nav-right">
+          @if (showFeedback()) {
+            <!-- After feedback in training mode -->
+            @if (isLastQuestion()) {
+              <ui-button variant="primary" (clicked)="onFinishQuiz()" testId="finish-button">
+                Voir les résultats
+              </ui-button>
+            } @else {
+              <ui-button variant="primary" (clicked)="onNextQuestion()" testId="next-button">
+                Question suivante
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </ui-button>
+            }
+          } @else {
+            <!-- Submit answer -->
+            <ui-button 
+              variant="primary" 
+              [loading]="submitting()"
+              [disabled]="!canSubmitAnswer()"
+              (clicked)="onSubmitAnswer()"
+              testId="submit-answer-button">
+              @if (isExamMode() && isLastQuestion()) {
+                Terminer le quiz
+              } @else if (isExamMode()) {
+                Suivant
+              } @else {
+                Valider
+              }
+            </ui-button>
+          }
+        </div>
+      </footer>
+
+      <!-- Question Navigator Overlay -->
+      @if (showQuestionNav) {
+        <div class="question-nav-overlay" (click)="toggleQuestionNav()">
+          <div class="question-nav-panel" (click)="$event.stopPropagation()">
+            <h3 class="nav-title">Navigation</h3>
+            <div class="question-grid">
+              @for (q of attempt()?.questions; track q.id; let i = $index) {
+                <button 
+                  class="question-dot"
+                  [class.current]="i === currentQuestionIndex()"
+                  [class.answered]="i < currentQuestionIndex()"
+                  (click)="onGoToQuestion(i)">
+                  {{ i + 1 }}
+                </button>
+              }
+            </div>
+            <div class="nav-legend">
+              <span class="legend-item"><span class="dot current"></span> Actuelle</span>
+              <span class="legend-item"><span class="dot answered"></span> Répondue</span>
+              <span class="legend-item"><span class="dot"></span> Non répondue</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

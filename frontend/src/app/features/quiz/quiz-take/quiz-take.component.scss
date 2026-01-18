@@ -1,0 +1,287 @@
+.quiz-take-container {
+  @apply min-h-screen;
+}
+
+// Loading & Error
+.loading-state,
+.error-state {
+  @apply py-16 text-center;
+}
+
+// Quiz Interface
+.quiz-interface {
+  @apply flex flex-col min-h-screen;
+}
+
+// Header
+.quiz-header {
+  @apply flex items-center justify-between px-4 py-3 bg-surface border-b border-border;
+  @apply sticky top-0 z-40;
+}
+
+.header-left {
+  @apply flex items-center gap-3;
+}
+
+.quiz-title {
+  @apply text-lg font-semibold text-text-primary truncate max-w-xs;
+}
+
+.mode-badge {
+  @apply text-xs px-2 py-1 rounded-full;
+
+  &.training {
+    @apply bg-primary/20 text-primary;
+  }
+
+  &.exam {
+    @apply bg-warning/20 text-warning;
+  }
+}
+
+.header-right {
+  @apply flex items-center gap-4;
+}
+
+.timer {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-surface-variant rounded-lg;
+  @apply text-text-primary font-mono;
+
+  &.critical {
+    @apply bg-error/20 text-error animate-pulse;
+  }
+}
+
+.timer-icon {
+  @apply w-5 h-5;
+}
+
+.timer-value {
+  @apply text-lg font-bold;
+}
+
+.quit-button {
+  @apply p-2 rounded-lg text-text-secondary;
+  @apply hover:bg-surface-variant hover:text-text-primary transition-colors;
+}
+
+.quit-icon {
+  @apply w-5 h-5;
+}
+
+// Progress
+.progress-container {
+  @apply px-4 py-3 bg-surface border-b border-border;
+}
+
+.progress-bar {
+  @apply w-full h-2 bg-surface-variant rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-primary transition-all duration-300 ease-out;
+}
+
+.progress-text {
+  @apply text-sm text-text-secondary text-center mt-2;
+}
+
+// Question Section
+.question-section {
+  @apply flex-1 p-4 max-w-3xl mx-auto w-full;
+}
+
+.question-header {
+  @apply flex items-center gap-3 mb-4;
+}
+
+.question-number {
+  @apply text-sm font-medium text-text-secondary;
+}
+
+.question-points {
+  @apply text-sm text-primary ml-auto;
+}
+
+.question-content {
+  @apply mb-6;
+}
+
+.question-text {
+  @apply text-xl text-text-primary leading-relaxed;
+}
+
+.question-image {
+  @apply mt-4 max-w-full rounded-lg;
+}
+
+// Answers
+.answers-container {
+  @apply space-y-3;
+}
+
+.answer-hint {
+  @apply text-sm text-text-secondary mb-3;
+}
+
+.answers-list {
+  @apply space-y-3;
+}
+
+.answer-option {
+  @apply w-full flex items-center gap-4 p-4 rounded-xl border border-border;
+  @apply bg-surface text-left transition-all duration-200;
+  @apply hover:border-primary/50 hover:bg-primary/5;
+
+  &.answer-selected {
+    @apply border-primary bg-primary/10;
+  }
+
+  &.answer-correct {
+    @apply border-success bg-success/10;
+  }
+
+  &.answer-incorrect {
+    @apply border-error bg-error/10;
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.answer-marker {
+  @apply flex-shrink-0;
+}
+
+.checkbox,
+.radio {
+  @apply w-6 h-6 border-2 border-border flex items-center justify-center;
+  @apply transition-all duration-200;
+
+  &.checked {
+    @apply border-primary bg-primary;
+  }
+}
+
+.checkbox {
+  @apply rounded;
+
+  svg {
+    @apply w-4 h-4 text-white;
+  }
+}
+
+.radio {
+  @apply rounded-full;
+}
+
+.radio-dot {
+  @apply w-3 h-3 bg-white rounded-full;
+}
+
+.answer-text {
+  @apply flex-1 text-text-primary;
+}
+
+.answer-image {
+  @apply w-24 h-24 object-cover rounded-lg;
+}
+
+// Feedback
+.feedback-section {
+  @apply mt-6 pt-6 border-t border-border space-y-4;
+}
+
+.feedback-points {
+  @apply ml-2 text-sm opacity-75;
+}
+
+.explanation {
+  @apply p-4 bg-surface-variant rounded-lg;
+}
+
+.explanation-title {
+  @apply font-medium text-text-primary mb-2;
+}
+
+.explanation-text {
+  @apply text-text-secondary;
+}
+
+// Footer Navigation
+.quiz-footer {
+  @apply flex items-center justify-between px-4 py-4 bg-surface border-t border-border;
+  @apply sticky bottom-0 z-40;
+}
+
+.nav-left,
+.nav-right {
+  @apply flex items-center gap-3;
+}
+
+.nav-icon {
+  @apply w-4 h-4;
+}
+
+.question-nav-toggle {
+  @apply flex items-center gap-2 px-3 py-2 text-text-secondary;
+  @apply hover:bg-surface-variant rounded-lg transition-colors;
+
+  svg {
+    @apply w-5 h-5;
+  }
+}
+
+// Question Navigator Overlay
+.question-nav-overlay {
+  @apply fixed inset-0 bg-black/50 z-50 flex items-end justify-center;
+  @apply animate-fade-in;
+}
+
+.question-nav-panel {
+  @apply w-full max-w-lg bg-surface rounded-t-2xl p-6;
+  @apply animate-slide-up;
+}
+
+.nav-title {
+  @apply text-lg font-semibold text-text-primary mb-4;
+}
+
+.question-grid {
+  @apply grid grid-cols-8 gap-2;
+}
+
+.question-dot {
+  @apply w-10 h-10 rounded-lg bg-surface-variant text-text-secondary;
+  @apply flex items-center justify-center text-sm font-medium;
+  @apply hover:bg-primary/20 transition-colors;
+
+  &.current {
+    @apply bg-primary text-white;
+  }
+
+  &.answered {
+    @apply bg-success/20 text-success;
+  }
+}
+
+.nav-legend {
+  @apply flex items-center gap-4 mt-4 pt-4 border-t border-border;
+}
+
+.legend-item {
+  @apply flex items-center gap-2 text-xs text-text-secondary;
+}
+
+.dot {
+  @apply w-3 h-3 rounded bg-surface-variant;
+
+  &.current {
+    @apply bg-primary;
+  }
+
+  &.answered {
+    @apply bg-success/30;
+  }
+}

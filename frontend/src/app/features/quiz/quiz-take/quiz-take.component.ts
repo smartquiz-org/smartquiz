@@ -1,123 +1,134 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { QuizSessionService } from '../services/quiz-session.service';
+import { ButtonComponent, CardComponent, LoaderComponent, AlertComponent, BadgeComponent } from '../../../shared/components/ui';
 
+/**
+ * Smart Component: Quiz Taking Interface
+ * Handles the active quiz session with questions, timer, and navigation
+ */
 @Component({
   selector: 'app-quiz-take',
   standalone: true,
-  template: `
-    <div class="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <!-- Header -->
-      <div class="card">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="font-semibold">Angular Signals Expert</h1>
-            <p class="text-sm text-text-secondary">Question 1 / 20</p>
-          </div>
-          <div class="text-right">
-            <div class="text-2xl font-mono font-bold text-primary">25:00</div>
-            <p class="text-xs text-text-secondary">Temps restant</p>
-          </div>
-        </div>
-        
-        <!-- Progress Bar -->
-        <div class="progress-bar mt-4">
-          <div class="progress-fill" style="width: 5%"></div>
-        </div>
-      </div>
-
-      <!-- Question -->
-      <div class="card space-y-6">
-        <div class="space-y-4">
-          <span class="badge badge-primary">Question 1</span>
-          <h2 class="text-xl font-semibold">
-            Quelle est la différence principale entre un Signal et un Observable dans Angular ?
-          </h2>
-        </div>
-
-        <!-- Options -->
-        <div class="space-y-3">
-          <button class="answer-option w-full text-left">
-            <div class="flex items-start gap-3">
-              <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-sm font-medium">
-                A
-              </span>
-              <span>Les Signals sont toujours asynchrones, les Observables sont synchrones</span>
-            </div>
-          </button>
-          
-          <button class="answer-option w-full text-left selected">
-            <div class="flex items-start gap-3">
-              <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-sm font-medium">
-                B
-              </span>
-              <span>Les Signals sont synchrones par nature, les Observables peuvent être asynchrones</span>
-            </div>
-          </button>
-          
-          <button class="answer-option w-full text-left">
-            <div class="flex items-start gap-3">
-              <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-sm font-medium">
-                C
-              </span>
-              <span>Il n'y a aucune différence, ce sont des synonymes</span>
-            </div>
-          </button>
-          
-          <button class="answer-option w-full text-left">
-            <div class="flex items-start gap-3">
-              <span class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center text-sm font-medium">
-                D
-              </span>
-              <span>Les Signals ne peuvent contenir que des primitives</span>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <!-- Navigation -->
-      <div class="flex items-center justify-between">
-        <button class="btn-secondary" disabled>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-          Précédent
-        </button>
-        
-        <div class="flex items-center gap-2">
-          <button class="btn-secondary text-sm">
-            🚩 Marquer
-          </button>
-        </div>
-        
-        <button class="btn-primary">
-          Suivant
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Question Map -->
-      <div class="card">
-        <h3 class="text-sm font-medium mb-3">Navigation rapide</h3>
-        <div class="flex flex-wrap gap-2">
-          @for (i of questionNumbers; track i) {
-            <button 
-              class="w-8 h-8 rounded text-sm font-medium transition-colors"
-              [class]="i === 1 
-                ? 'bg-primary text-white' 
-                : i <= 3 
-                  ? 'bg-primary/20 text-primary' 
-                  : 'bg-surface-variant text-text-secondary hover:bg-surface'">
-              {{ i }}
-            </button>
-          }
-        </div>
-      </div>
-    </div>
-  `
+  imports: [
+    CommonModule,
+    ButtonComponent,
+    CardComponent,
+    LoaderComponent,
+    AlertComponent,
+    BadgeComponent
+  ],
+  templateUrl: './quiz-take.component.html',
+  styleUrl: './quiz-take.component.scss'
 })
-export class QuizTakeComponent {
+export class QuizTakeComponent implements OnInit, OnDestroy {
   @Input() attemptId!: string;
-  
-  questionNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
+
+  private readonly session = inject(QuizSessionService);
+  private readonly router = inject(Router);
+
+  // Expose session signals to template
+  readonly attempt = this.session.attempt;
+  readonly currentQuestion = this.session.currentQuestion;
+  readonly currentQuestionIndex = this.session.currentQuestionIndex;
+  readonly totalQuestions = this.session.totalQuestions;
+  readonly selectedAnswers = this.session.selectedAnswers;
+  readonly timeRemaining = this.session.timeRemaining;
+  readonly formattedTime = this.session.formattedTime;
+  readonly isTimeCritical = this.session.isTimeCritical;
+  readonly progress = this.session.progress;
+  readonly loading = this.session.loading;
+  readonly submitting = this.session.submitting;
+  readonly error = this.session.error;
+  readonly showFeedback = this.session.showFeedback;
+  readonly lastFeedback = this.session.lastFeedback;
+  readonly isTrainingMode = this.session.isTrainingMode;
+  readonly isExamMode = this.session.isExamMode;
+  readonly isLastQuestion = this.session.isLastQuestion;
+  readonly canSubmitAnswer = this.session.canSubmitAnswer;
+
+  // UI State
+  showQuestionNav = false;
+
+  ngOnInit(): void {
+    if (this.attemptId) {
+      this.session.loadAttempt(this.attemptId);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Session persists for potential resume
+  }
+
+  isAnswerSelected(answerId: string): boolean {
+    return this.selectedAnswers().includes(answerId);
+  }
+
+  onSelectAnswer(answerId: string): void {
+    if (!this.showFeedback()) {
+      this.session.selectAnswer(answerId);
+    }
+  }
+
+  onSubmitAnswer(): void {
+    this.session.submitAnswer();
+  }
+
+  onNextQuestion(): void {
+    this.session.nextQuestion();
+  }
+
+  onPreviousQuestion(): void {
+    this.session.previousQuestion();
+  }
+
+  onGoToQuestion(index: number): void {
+    this.session.goToQuestion(index);
+    this.showQuestionNav = false;
+  }
+
+  onFinishQuiz(): void {
+    if (confirm('\u00cates-vous s\u00fbr de vouloir terminer le quiz ?')) {
+      this.session.finishQuiz();
+    }
+  }
+
+  onQuitQuiz(): void {
+    if (confirm('\u00cates-vous s\u00fbr de vouloir quitter ? Votre progression sera sauvegard\u00e9e.')) {
+      this.router.navigate(['/quizzes']);
+    }
+  }
+
+  toggleQuestionNav(): void {
+    this.showQuestionNav = !this.showQuestionNav;
+  }
+
+  getQuestionTypeLabel(type: string): string {
+    const labels: Record<string, string> = {
+      SINGLE_CHOICE: 'Choix unique',
+      MULTIPLE_CHOICE: 'Choix multiples',
+      TRUE_FALSE: 'Vrai / Faux',
+      IMAGE: 'Question image'
+    };
+    return labels[type] || type;
+  }
+
+  getAnswerClass(answerId: string): string {
+    const feedback = this.lastFeedback();
+    const isSelected = this.isAnswerSelected(answerId);
+    
+    if (this.showFeedback() && feedback) {
+      const isCorrect = feedback.correctAnswerIds.includes(answerId);
+      const wasSelected = feedback.selectedAnswerIds.includes(answerId);
+      
+      if (isCorrect) {
+        return 'answer-correct';
+      } else if (wasSelected && !isCorrect) {
+        return 'answer-incorrect';
+      }
+    }
+    
+    return isSelected ? 'answer-selected' : '';
+  }
 }
