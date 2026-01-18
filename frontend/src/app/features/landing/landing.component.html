@@ -1,0 +1,253 @@
+<div class="landing-page">
+  <app-landing-header />
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="hero-badge">Centre d'apprentissage</span>
+        <h1 class="hero-title">
+          Votre espace pour <span class="highlight">apprendre</span>,
+          <span class="highlight">progresser</span> et
+          <span class="highlight">réussir</span>
+        </h1>
+        <p class="hero-description">
+          Développez vos compétences avec nos quiz interactifs, suivez vos progrès
+          et atteignez vos objectifs d'apprentissage.
+        </p>
+        <div class="hero-actions">
+          <a routerLink="/quizzes" class="btn-primary">
+            Explorer les quiz
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+          </a>
+          <a href="#how-it-works" class="btn-secondary">
+            Comment ça marche
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card main-card">
+          <div class="card-header">
+            <span class="card-icon">🎯</span>
+            <span class="card-badge">Quiz du jour</span>
+          </div>
+          <h3>JavaScript Avancé</h3>
+          <p>15 questions • Intermédiaire</p>
+          <div class="card-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%"></div>
+            </div>
+            <span>75% complété</span>
+          </div>
+        </div>
+        <div class="hero-card floating-card card-1">
+          <span class="float-icon">✅</span>
+          <span>12 bonnes réponses</span>
+        </div>
+        <div class="hero-card floating-card card-2">
+          <span class="float-icon">🏆</span>
+          <span>Score: 94%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-badge">Ce que nous offrons</span>
+        <h2 class="section-title">Une nouvelle approche de l'apprentissage</h2>
+        <p class="section-description">
+          Des outils modernes pour vous aider à apprendre plus efficacement
+        </p>
+      </div>
+      <div class="features-grid">
+        @for (feature of features; track feature.number) {
+          <div class="feature-card">
+            <span class="feature-number">{{ feature.number }}</span>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-description">{{ feature.description }}</p>
+            <a href="#" class="feature-link">
+              En savoir plus
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-badge">Comment ça marche</span>
+        <h2 class="section-title">Apprendre n'a jamais été aussi simple</h2>
+      </div>
+      <div class="steps-container">
+        @for (step of steps; track step.number) {
+          <div class="step-card">
+            <div class="step-number">{{ step.number }}</div>
+            <h3 class="step-title">{{ step.title }}</h3>
+            <p class="step-description">{{ step.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="section-container">
+      <div class="stats-content">
+        <div class="stats-text">
+          <span class="section-badge">Nos chiffres</span>
+          <h2 class="section-title">Des résultats qui parlent</h2>
+          <p class="section-description">
+            Rejoignez une communauté en pleine croissance et découvrez
+            pourquoi nos utilisateurs nous font confiance.
+          </p>
+          <a routerLink="/quizzes" class="btn-primary">
+            Commencer maintenant
+          </a>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value">{{ quizCount() }}+</span>
+            <span class="stat-label">Quiz disponibles</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ userCount() }}+</span>
+            <span class="stat-label">Utilisateurs actifs</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ questionCount() }}+</span>
+            <span class="stat-label">Questions</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ successRate() }}%</span>
+            <span class="stat-label">Taux de satisfaction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" id="categories">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-badge">Explorez</span>
+        <h2 class="section-title">Catégories populaires</h2>
+        <p class="section-description">
+          Trouvez le sujet qui vous passionne parmi nos nombreuses catégories
+        </p>
+      </div>
+      <div class="categories-grid">
+        @for (cat of categories; track cat.name) {
+          <a routerLink="/quizzes" [queryParams]="{category: cat.name}" class="category-card" [attr.data-color]="cat.color">
+            <div class="category-icon">
+              @switch (cat.icon) {
+                @case ('code') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                  </svg>
+                }
+                @case ('chart') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                  </svg>
+                }
+                @case ('palette') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                  </svg>
+                }
+                @case ('megaphone') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                  </svg>
+                }
+                @case ('globe') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                  </svg>
+                }
+                @case ('briefcase') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                }
+              }
+            </div>
+            <h3 class="category-name">{{ cat.name }}</h3>
+            <span class="category-count">{{ cat.count }} quiz</span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-badge">Témoignages</span>
+        <h2 class="section-title">Ce que disent nos utilisateurs</h2>
+      </div>
+      <div class="testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.name) {
+          <div class="testimonial-card">
+            <div class="testimonial-content">
+              <div class="stars">
+                @for (star of [1,2,3,4,5]; track star) {
+                  <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                }
+              </div>
+              <p class="testimonial-text">"{{ testimonial.content }}"</p>
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">{{ testimonial.avatar }}</div>
+              <div class="author-info">
+                <span class="author-name">{{ testimonial.name }}</span>
+                <span class="author-role">{{ testimonial.role }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="section-container">
+      <div class="cta-content">
+        <h2 class="cta-title">Prêt à booster vos compétences ?</h2>
+        <p class="cta-description">
+          Rejoignez des milliers d'apprenants et commencez votre parcours dès aujourd'hui.
+        </p>
+        <a routerLink="/quizzes" class="btn-cta">
+          Commencer gratuitement
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <app-landing-footer />
+</div>
