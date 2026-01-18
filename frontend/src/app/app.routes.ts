@@ -9,6 +9,14 @@ export const routes: Routes = [
     title: 'SmartQuiz - Dashboard'
   },
   
+  // UI Components Showcase (dev)
+  {
+    path: 'ui-showcase',
+    loadComponent: () => import('./features/ui-showcase/ui-showcase.component')
+      .then(m => m.UiShowcaseComponent),
+    title: 'Composants UI - SmartQuiz'
+  },
+  
   // Quiz Catalog
   {
     path: 'quizzes',
