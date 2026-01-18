@@ -1,0 +1,134 @@
+.history-container {
+  @apply space-y-6 animate-fade-in;
+}
+
+// Header
+.history-header {
+  @apply mb-8;
+}
+
+.history-title {
+  @apply text-3xl font-bold text-text-primary;
+}
+
+.history-subtitle {
+  @apply text-text-secondary mt-1;
+}
+
+// Loading
+.loading-state {
+  @apply py-16;
+}
+
+// Attempts List
+.attempts-list {
+  @apply space-y-3;
+}
+
+.attempt-card {
+  @apply block bg-surface border border-border rounded-xl p-4;
+  @apply transition-all duration-200;
+  @apply hover:border-primary/50 hover:shadow-md;
+}
+
+.attempt-main {
+  @apply flex items-start justify-between gap-4;
+}
+
+.attempt-info {
+  @apply flex-1 min-w-0;
+}
+
+.attempt-title {
+  @apply font-semibold text-text-primary truncate;
+}
+
+.attempt-meta {
+  @apply flex flex-wrap items-center gap-3 mt-1 text-sm text-text-secondary;
+}
+
+.meta-item {
+  @apply inline-flex items-center;
+}
+
+// Attempt Results
+.attempt-results {
+  @apply flex items-center gap-6 mt-4 pt-4 border-t border-border;
+}
+
+.result-item {
+  @apply text-center;
+}
+
+.result-value {
+  @apply block text-xl font-bold text-text-primary;
+
+  &.passed {
+    @apply text-success;
+  }
+
+  &.failed {
+    @apply text-error;
+  }
+}
+
+.result-label {
+  @apply text-xs text-text-secondary;
+}
+
+.result-badge {
+  @apply ml-auto w-10 h-10 rounded-full flex items-center justify-center;
+  @apply bg-error/20 text-error;
+
+  &.passed {
+    @apply bg-success/20 text-success;
+  }
+}
+
+.badge-icon {
+  @apply w-6 h-6;
+}
+
+// Continue
+.attempt-continue {
+  @apply flex items-center gap-2 mt-4 pt-4 border-t border-border text-primary;
+}
+
+.continue-text {
+  @apply font-medium;
+}
+
+.continue-icon {
+  @apply w-5 h-5;
+}
+
+// Load More
+.load-more {
+  @apply flex justify-center pt-4;
+}
+
+.results-info {
+  @apply text-center text-sm text-text-secondary;
+}
+
+// Empty State
+.empty-state {
+  @apply text-center py-16;
+}
+
+.empty-icon {
+  @apply text-6xl mb-4 block;
+}
+
+.empty-title {
+  @apply text-xl font-semibold text-text-primary;
+}
+
+.empty-subtitle {
+  @apply text-text-secondary mt-1;
+}
+
+.empty-cta {
+  @apply inline-block mt-4 px-6 py-3 bg-primary text-white rounded-lg font-medium;
+  @apply hover:bg-primary-hover transition-colors;
+}

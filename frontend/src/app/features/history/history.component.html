@@ -1,0 +1,102 @@
+<div class="history-container" data-testid="history">
+  <!-- Header -->
+  <header class="history-header">
+    <h1 class="history-title">Historique</h1>
+    <p class="history-subtitle">Retrouvez toutes vos tentatives de quiz</p>
+  </header>
+
+  <!-- Loading -->
+  @if (loading() && attempts().length === 0) {
+    <div class="loading-state">
+      <ui-loader size="lg" text="Chargement de l'historique..." [centered]="true" />
+    </div>
+  }
+
+  <!-- Attempts List -->
+  @if (hasAttempts()) {
+    <div class="attempts-list" data-testid="attempts-list">
+      @for (attempt of attempts(); track attempt.id) {
+        <a 
+          [routerLink]="attempt.status === 'COMPLETED' ? ['/results', attempt.id] : ['/quiz', attempt.id]"
+          class="attempt-card"
+          [attr.data-testid]="'attempt-' + attempt.id">
+          <div class="attempt-main">
+            <div class="attempt-info">
+              <h3 class="attempt-title">{{ attempt.quizTitle }}</h3>
+              <div class="attempt-meta">
+                <span class="meta-item">{{ formatDate(attempt.startedAt) }}</span>
+                <span class="meta-item">{{ getModeLabel(attempt.mode) }}</span>
+                <span class="meta-item">{{ formatDuration(attempt.timeSpent) }}</span>
+              </div>
+            </div>
+            
+            <div class="attempt-status">
+              <ui-badge [variant]="getStatusVariant(attempt.status)" size="sm">
+                {{ getStatusLabel(attempt.status) }}
+              </ui-badge>
+            </div>
+          </div>
+          
+          @if (attempt.status === 'COMPLETED') {
+            <div class="attempt-results">
+              <div class="result-item">
+                <span class="result-value" [class.passed]="attempt.passed" [class.failed]="!attempt.passed">
+                  {{ attempt.percentage | number:'1.0-0' }}%
+                </span>
+                <span class="result-label">Score</span>
+              </div>
+              <div class="result-item">
+                <span class="result-value">{{ attempt.score }}/{{ attempt.totalPoints }}</span>
+                <span class="result-label">Points</span>
+              </div>
+              <div class="result-badge" [class.passed]="attempt.passed">
+                @if (attempt.passed) {
+                  <svg class="badge-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                } @else {
+                  <svg class="badge-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                  </svg>
+                }
+              </div>
+            </div>
+          } @else if (attempt.status === 'IN_PROGRESS') {
+            <div class="attempt-continue">
+              <span class="continue-text">Reprendre</span>
+              <svg class="continue-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </div>
+          }
+        </a>
+      }
+    </div>
+
+    <!-- Load More -->
+    @if (hasMorePages()) {
+      <div class="load-more">
+        <ui-button variant="secondary" [loading]="loading()" (clicked)="loadMore()">
+          Charger plus
+        </ui-button>
+      </div>
+    }
+
+    <!-- Results Info -->
+    <div class="results-info">
+      {{ attempts().length }} sur {{ totalElements() }} tentatives
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && !hasAttempts()) {
+    <div class="empty-state" data-testid="empty-state">
+      <span class="empty-icon">📊</span>
+      <h2 class="empty-title">Aucune tentative</h2>
+      <p class="empty-subtitle">Vous n'avez pas encore passé de quiz.</p>
+      <a routerLink="/quizzes" class="empty-cta">
+        Découvrir les quiz
+      </a>
+    </div>
+  }
+</div>
