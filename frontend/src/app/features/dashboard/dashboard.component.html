@@ -1,0 +1,142 @@
+<div class="dashboard-container" data-testid="dashboard">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Bienvenue sur SmartQuiz 🧠</h1>
+      <p class="hero-subtitle">Testez vos connaissances et progressez avec nos quiz interactifs</p>
+      <a routerLink="/quizzes" class="hero-cta" data-testid="explore-cta">
+        Explorer les quiz
+        <svg class="cta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats Overview -->
+  @if (hasStats()) {
+    <section class="stats-section">
+      <h2 class="section-title">Vos statistiques</h2>
+      <div class="stats-grid">
+        <ui-card variant="default" testId="stat-completed">
+          <div class="stat-card">
+            <span class="stat-icon">🏆</span>
+            <span class="stat-value">{{ stats()?.totalQuizzesCompleted }}</span>
+            <span class="stat-label">Quiz complétés</span>
+          </div>
+        </ui-card>
+        
+        <ui-card variant="default" testId="stat-score">
+          <div class="stat-card">
+            <span class="stat-icon">🎯</span>
+            <span class="stat-value">{{ stats()?.averageScore | number:'1.0-0' }}%</span>
+            <span class="stat-label">Score moyen</span>
+          </div>
+        </ui-card>
+        
+        <ui-card variant="default" testId="stat-correct">
+          <div class="stat-card">
+            <span class="stat-icon">✅</span>
+            <span class="stat-value">{{ stats()?.totalCorrectAnswers }}/{{ stats()?.totalQuestions }}</span>
+            <span class="stat-label">Bonnes réponses</span>
+          </div>
+        </ui-card>
+        
+        <ui-card variant="default" testId="stat-time">
+          <div class="stat-card">
+            <span class="stat-icon">⏱️</span>
+            <span class="stat-value">{{ formatTime(stats()?.totalTimeSpent ?? 0) }}</span>
+            <span class="stat-label">Temps total</span>
+          </div>
+        </ui-card>
+      </div>
+
+      <!-- Category Stats -->
+      @if (categoryStatsList().length > 0) {
+        <h3 class="subsection-title">Performance par catégorie</h3>
+        <div class="category-grid">
+          @for (cat of categoryStatsList(); track cat.categoryId) {
+            <div class="category-card">
+              <div class="category-header">
+                <span class="category-name">{{ cat.categoryName }}</span>
+                <span class="category-score">{{ cat.averageScore | number:'1.0-0' }}%</span>
+              </div>
+              <div class="category-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="cat.averageScore"></div>
+                </div>
+              </div>
+              <span class="category-detail">{{ cat.quizzesCompleted }} quiz • {{ cat.correctAnswers }}/{{ cat.totalQuestions }} correct</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <!-- Popular Quizzes -->
+  <section class="popular-section">
+    <div class="section-header">
+      <h2 class="section-title">Quiz populaires</h2>
+      <a routerLink="/quizzes" class="see-all-link">Voir tout</a>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-state">
+        <ui-loader text="Chargement..." />
+      </div>
+    } @else if (popularQuizzes().length > 0) {
+      <div class="popular-grid">
+        @for (quiz of popularQuizzes(); track quiz.id) {
+          <a [routerLink]="['/quizzes', quiz.id]" class="quiz-card" [attr.data-testid]="'popular-quiz-' + quiz.id">
+            <div class="quiz-cover">
+              @if (quiz.imageUrl) {
+                <img [src]="quiz.imageUrl" [alt]="quiz.title" class="cover-image" />
+              } @else {
+                <div class="cover-placeholder">
+                  <span class="cover-emoji">🧠</span>
+                </div>
+              }
+              <div class="cover-badge">
+                <ui-badge [variant]="getDifficultyVariant(quiz.difficulty)" size="sm">
+                  {{ getDifficultyLabel(quiz.difficulty) }}
+                </ui-badge>
+              </div>
+            </div>
+            <div class="quiz-info">
+              <span class="quiz-category">{{ quiz.categoryName }}</span>
+              <h3 class="quiz-title">{{ quiz.title }}</h3>
+              <div class="quiz-meta">
+                <span>{{ quiz.questionCount }} questions</span>
+                <span>•</span>
+                <span>{{ quiz.attemptCount }} tentatives</span>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <p>Aucun quiz disponible pour le moment.</p>
+        <a routerLink="/quizzes" class="empty-cta">
+          Parcourir le catalogue
+        </a>
+      </div>
+    }
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="actions-section">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-grid">
+      <a routerLink="/quizzes" class="action-card" data-testid="action-catalog">
+        <span class="action-icon">📚</span>
+        <span class="action-label">Catalogue</span>
+      </a>
+      <a routerLink="/history" class="action-card" data-testid="action-history">
+        <span class="action-icon">📊</span>
+        <span class="action-label">Historique</span>
+      </a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,194 @@
+.dashboard-container {
+  @apply space-y-10 animate-fade-in;
+}
+
+// Hero Section
+.hero-section {
+  @apply bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl p-8 md:p-12;
+}
+
+.hero-content {
+  @apply max-w-2xl;
+}
+
+.hero-title {
+  @apply text-3xl md:text-4xl font-bold text-text-primary mb-3;
+}
+
+.hero-subtitle {
+  @apply text-lg text-text-secondary mb-6;
+}
+
+.hero-cta {
+  @apply inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium;
+  @apply hover:bg-primary-hover transition-colors;
+}
+
+.cta-icon {
+  @apply w-5 h-5;
+}
+
+// Stats Section
+.stats-section {
+  @apply space-y-6;
+}
+
+.section-title {
+  @apply text-xl font-semibold text-text-primary;
+}
+
+.subsection-title {
+  @apply text-lg font-medium text-text-primary mt-6 mb-4;
+}
+
+.stats-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4;
+}
+
+.stat-card {
+  @apply flex flex-col items-center text-center py-2;
+}
+
+.stat-icon {
+  @apply text-3xl mb-2;
+}
+
+.stat-value {
+  @apply text-2xl font-bold text-text-primary;
+}
+
+.stat-label {
+  @apply text-sm text-text-secondary;
+}
+
+// Category Stats
+.category-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+}
+
+.category-card {
+  @apply p-4 bg-surface border border-border rounded-xl space-y-2;
+}
+
+.category-header {
+  @apply flex items-center justify-between;
+}
+
+.category-name {
+  @apply font-medium text-text-primary;
+}
+
+.category-score {
+  @apply text-primary font-bold;
+}
+
+.category-progress {
+  @apply h-2 bg-surface-variant rounded-full overflow-hidden;
+}
+
+.progress-bar {
+  @apply h-full bg-surface-variant rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-primary transition-all duration-500;
+}
+
+.category-detail {
+  @apply text-xs text-text-secondary;
+}
+
+// Popular Section
+.popular-section {
+  @apply space-y-4;
+}
+
+.section-header {
+  @apply flex items-center justify-between;
+}
+
+.see-all-link {
+  @apply text-primary text-sm hover:underline;
+}
+
+.loading-state {
+  @apply py-8 text-center;
+}
+
+.popular-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4;
+}
+
+.quiz-card {
+  @apply block bg-surface border border-border rounded-xl overflow-hidden;
+  @apply transition-all duration-300;
+  @apply hover:border-primary/50 hover:shadow-lg hover:-translate-y-1;
+}
+
+.quiz-cover {
+  @apply relative h-32 overflow-hidden;
+}
+
+.cover-image {
+  @apply w-full h-full object-cover;
+}
+
+.cover-placeholder {
+  @apply w-full h-full bg-gradient-to-br from-primary/20 to-primary/5;
+  @apply flex items-center justify-center;
+}
+
+.cover-emoji {
+  @apply text-4xl;
+}
+
+.cover-badge {
+  @apply absolute top-2 left-2;
+}
+
+.quiz-info {
+  @apply p-3 space-y-1;
+}
+
+.quiz-category {
+  @apply text-xs text-text-secondary uppercase tracking-wide;
+}
+
+.quiz-title {
+  @apply font-medium text-text-primary line-clamp-1;
+}
+
+.quiz-meta {
+  @apply flex items-center gap-1 text-xs text-text-secondary;
+}
+
+// Empty State
+.empty-state {
+  @apply text-center py-8;
+}
+
+.empty-cta {
+  @apply inline-block mt-3 text-primary hover:underline;
+}
+
+// Actions Section
+.actions-section {
+  @apply space-y-4;
+}
+
+.actions-grid {
+  @apply flex flex-wrap gap-4;
+}
+
+.action-card {
+  @apply flex items-center gap-3 px-6 py-4 bg-surface border border-border rounded-xl;
+  @apply hover:border-primary/50 hover:bg-primary/5 transition-all;
+}
+
+.action-icon {
+  @apply text-2xl;
+}
+
+.action-label {
+  @apply font-medium text-text-primary;
+}
