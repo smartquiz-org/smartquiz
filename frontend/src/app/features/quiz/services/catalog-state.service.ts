@@ -107,7 +107,7 @@ export class CatalogStateService {
         takeUntilDestroyed(this.destroyRef),
         catchError(err => {
           this.updateState({ loading: false, error: 'Erreur lors du chargement des quiz' });
-          return of({ content: [], totalPages: 0, totalElements: 0, number: 0 } as Page<QuizSummary>);
+          return of({ content: [], totalPages: 0, totalElements: 0, number: 0, size: 12, first: true, last: true } as Page<QuizSummary>);
         })
       )
       .subscribe(response => {
