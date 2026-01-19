@@ -104,7 +104,12 @@ export class QuizSessionService {
 
   // Actions
   startQuiz(quizId: string, mode: AttemptMode): void {
-    this.updateState({ loading: true, error: null });
+    // Reset state before starting new quiz
+    this.state.set({
+      ...initialState,
+      loading: true,
+      error: null
+    });
 
     this.repository.startAttempt({ quizId, mode })
       .pipe(
@@ -119,6 +124,7 @@ export class QuizSessionService {
           this.updateState({
             attempt,
             currentQuestionIndex: attempt.currentQuestionIndex,
+            selectedAnswers: [],
             timeRemaining: attempt.timeLimit - attempt.timeSpent,
             loading: false
           });
@@ -129,7 +135,7 @@ export class QuizSessionService {
   }
 
   loadAttempt(attemptId: string): void {
-    this.updateState({ loading: true, error: null });
+    this.updateState({ loading: true, error: null, selectedAnswers: [] });
 
     this.repository.getAttempt(attemptId)
       .pipe(
@@ -148,8 +154,11 @@ export class QuizSessionService {
           this.updateState({
             attempt,
             currentQuestionIndex: attempt.currentQuestionIndex,
+            selectedAnswers: [],
             timeRemaining: attempt.timeLimit - attempt.timeSpent,
-            loading: false
+            loading: false,
+            showFeedback: false,
+            lastFeedback: null
           });
           this.startTimer();
         }

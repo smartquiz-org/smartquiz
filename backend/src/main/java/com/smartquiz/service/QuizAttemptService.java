@@ -68,6 +68,10 @@ public class QuizAttemptService {
         Quiz quiz = quizService.getFullQuizById(attempt.getQuizId())
             .orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
         
+        // Return with results if completed, otherwise without
+        if (attempt.getStatus() == QuizAttempt.AttemptStatus.COMPLETED) {
+            return toAttemptDtoWithResults(attempt, quiz);
+        }
         return toAttemptDto(attempt, quiz);
     }
     
