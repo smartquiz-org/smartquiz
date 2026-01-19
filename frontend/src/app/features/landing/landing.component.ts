@@ -26,13 +26,21 @@ export class LandingComponent implements OnInit {
     successRate: 94
   };
 
+  // Quiz preview options for hero
+  quizOptions = [
+    { label: 'A', text: 'Ag', correct: false },
+    { label: 'B', text: 'Au', correct: true },
+    { label: 'C', text: 'Go', correct: false },
+    { label: 'D', text: 'Gd', correct: false },
+  ];
+
   categories = [
-    { name: 'Développement Web', icon: 'code', count: 45, color: 'coral' },
-    { name: 'Data Science', icon: 'chart', count: 32, color: 'teal' },
-    { name: 'Design UX/UI', icon: 'palette', count: 28, color: 'purple' },
-    { name: 'Marketing Digital', icon: 'megaphone', count: 25, color: 'orange' },
-    { name: 'Langues', icon: 'globe', count: 40, color: 'blue' },
-    { name: 'Business', icon: 'briefcase', count: 35, color: 'green' }
+    { name: 'Développement Web', icon: 'code', count: 45, color: 'primary' },
+    { name: 'Data Science', icon: 'chart', count: 32, color: 'accent' },
+    { name: 'Design UX/UI', icon: 'palette', count: 28, color: 'secondary' },
+    { name: 'Marketing Digital', icon: 'megaphone', count: 25, color: 'warning' },
+    { name: 'Langues', icon: 'globe', count: 40, color: 'success' },
+    { name: 'Business', icon: 'briefcase', count: 35, color: 'error' }
   ];
 
   testimonials = [
@@ -61,29 +69,48 @@ export class LandingComponent implements OnInit {
 
   features = [
     {
-      number: '01',
-      title: 'Apprentissage Adaptatif',
-      description: 'Des quiz qui s\'adaptent à votre niveau et vous aident à progresser à votre rythme.',
-      icon: 'brain'
+      title: 'Apprentissage Intelligent',
+      description: 'Quiz adaptatifs alimentés par l\'IA qui s\'ajustent à votre niveau en temps réel pour un apprentissage optimal.',
+      icon: 'brain',
+      color: 'primary'
     },
     {
-      number: '02',
-      title: 'Suivi Personnalisé',
-      description: 'Visualisez vos progrès avec des statistiques détaillées et des recommandations.',
-      icon: 'chart'
+      title: 'Succès & Badges',
+      description: 'Gagnez des récompenses, débloquez des succès et montrez votre expertise avec des badges collectibles.',
+      icon: 'trophy',
+      color: 'accent'
     },
     {
-      number: '03',
-      title: 'Contenu Riche',
-      description: 'Des milliers de questions dans des domaines variés, régulièrement mis à jour.',
-      icon: 'library'
+      title: 'Suivi de Progression',
+      description: 'Analyses et insights détaillés pour suivre votre parcours d\'apprentissage et identifier les axes d\'amélioration.',
+      icon: 'chart',
+      color: 'secondary'
     },
     {
-      number: '04',
-      title: 'Communauté Active',
-      description: 'Partagez vos scores, défiez vos amis et apprenez ensemble.',
-      icon: 'users'
+      title: 'Compétition & Collaboration',
+      description: 'Défiez vos amis, rejoignez des groupes d\'étude et grimpez dans le classement mondial.',
+      icon: 'users',
+      color: 'primary'
+    },
+    {
+      title: 'Quiz Rapides',
+      description: 'Sessions de quiz courtes et ciblées parfaites pour les emplois du temps chargés. Apprenez en seulement 5 minutes par jour.',
+      icon: 'zap',
+      color: 'accent'
+    },
+    {
+      title: 'Contenu Vérifié',
+      description: 'Questions élaborées par des experts et revues par des éducateurs pour leur exactitude et pertinence.',
+      icon: 'shield',
+      color: 'secondary'
     }
+  ];
+
+  stats = [
+    { value: '50K+', label: 'Apprenants actifs', icon: 'users' },
+    { value: '1M+', label: 'Quiz complétés', icon: 'target' },
+    { value: '500+', label: 'Catégories de quiz', icon: 'brain' },
+    { value: '98%', label: 'Taux de satisfaction', icon: 'trophy' },
   ];
 
   steps = [
