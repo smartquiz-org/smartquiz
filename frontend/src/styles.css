@@ -212,14 +212,20 @@
     background: var(--surface-variant);
     color: var(--text-primary);
     border-color: var(--border);
-    @apply hover:border-primary/50;
+  }
+  
+  .btn-secondary:hover {
+    border-color: rgba(139, 92, 246, 0.5);
   }
 
   .btn-outline {
     @apply btn bg-transparent border;
     color: var(--primary);
     border-color: var(--border);
-    @apply hover:bg-primary/10;
+  }
+  
+  .btn-outline:hover {
+    background: rgba(139, 92, 246, 0.1);
   }
 
   .btn-ghost {
