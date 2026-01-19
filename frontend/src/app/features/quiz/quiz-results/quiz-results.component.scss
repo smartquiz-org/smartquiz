@@ -23,31 +23,35 @@
 }
 
 .score-circle {
-  @apply w-36 h-36 rounded-full flex flex-col items-center justify-center;
-  @apply border-8;
+  @apply w-36 h-36 rounded-full flex flex-col items-center justify-center border-8;
 
   &.score-excellent {
-    @apply border-success;
-    background-color: rgba(34, 197, 94, 0.1);
-    .score-value { @apply text-success; }
+    border-color: var(--success);
+    background: rgba(34, 197, 94, 0.1);
+    .score-value { color: var(--success); }
   }
 
   &.score-good {
-    @apply border-primary;
-    background-color: rgba(59, 130, 246, 0.1);
-    .score-value { @apply text-primary; }
+    border-color: var(--primary);
+    background: rgba(139, 92, 246, 0.1);
+    .score-value { 
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
   }
 
   &.score-average {
-    @apply border-warning;
-    background-color: rgba(245, 158, 11, 0.1);
-    .score-value { @apply text-warning; }
+    border-color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+    .score-value { color: var(--warning); }
   }
 
   &.score-poor {
-    @apply border-error;
-    background-color: rgba(239, 68, 68, 0.1);
-    .score-value { @apply text-error; }
+    border-color: var(--error);
+    background: rgba(239, 68, 68, 0.1);
+    .score-value { color: var(--error); }
   }
 }
 
@@ -63,13 +67,13 @@
   @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
 
   &.passed {
-    background-color: rgba(34, 197, 94, 0.2);
-    @apply text-success;
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
   }
 
   &.failed {
-    background-color: rgba(239, 68, 68, 0.2);
-    @apply text-error;
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
   }
 }
 
@@ -83,7 +87,11 @@
 }
 
 .quiz-title {
-  @apply text-2xl font-bold text-text-primary mb-6;
+  @apply text-2xl font-bold mb-6;
+  background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stats-grid {
@@ -91,7 +99,8 @@
 }
 
 .stat-item {
-  @apply p-4 bg-surface-variant rounded-lg;
+  @apply p-4 rounded-xl;
+  background: var(--surface-variant);
 }
 
 .stat-value {
@@ -113,12 +122,16 @@
 
 // Review Section
 .review-section {
-  @apply bg-surface border border-border rounded-xl overflow-hidden;
+  @apply rounded-2xl overflow-hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
 }
 
 .review-toggle {
-  @apply w-full flex items-center justify-between p-4 text-text-primary font-medium;
-  @apply hover:bg-surface-variant transition-colors;
+  @apply w-full flex items-center justify-between p-4 text-text-primary font-medium transition-colors;
+  &:hover {
+    background: var(--surface-variant);
+  }
 }
 
 .toggle-icon {
@@ -130,18 +143,23 @@
 }
 
 .review-list {
-  @apply divide-y divide-border;
+  border-top: 1px solid var(--border);
 }
 
 .review-item {
   @apply p-4 space-y-3;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &.correct {
-    @apply border-l-4 border-l-success;
+    border-left: 4px solid var(--success);
   }
 
   &.incorrect {
-    @apply border-l-4 border-l-error;
+    border-left: 4px solid var(--error);
   }
 }
 
@@ -173,14 +191,17 @@
   @apply text-text-primary;
 
   &.wrong {
-    @apply text-error line-through;
+    color: var(--error);
+    @apply line-through;
   }
 }
 
 .correct-answer {
-  @apply text-success font-medium;
+  @apply font-medium;
+  color: var(--success);
 }
 
 .review-explanation {
-  @apply p-3 bg-surface-variant rounded-lg text-sm text-text-secondary;
+  @apply p-3 rounded-xl text-sm text-text-secondary;
+  background: var(--surface-variant);
 }
