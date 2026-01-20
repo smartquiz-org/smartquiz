@@ -1,27 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService } from '../core/services/theme.service';
+import { LogoComponent } from '@shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, LogoComponent],
   template: `
     <header class="glass sticky top-0 z-50 border-b border-border/50">
       <nav class="container mx-auto px-4">
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
-          <a routerLink="/" class="flex items-center gap-2 group" data-testid="header-logo">
-            <div class="relative">
-              <div class="absolute inset-0 gradient-primary rounded-lg blur-sm opacity-60 group-hover:opacity-100 transition-opacity"></div>
-              <div class="relative bg-card p-1.5 rounded-lg border border-border">
-                <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2a9 9 0 0 1 9 9c0 3.074-1.676 5.59-3.442 7.395a20.441 20.441 0 0 1-2.876 2.416l-.426.29a3 3 0 0 1-4.512 0l-.426-.29a20.441 20.441 0 0 1-2.876-2.416C4.676 16.59 3 14.074 3 11a9 9 0 0 1 9-9z"/>
-                  <circle cx="12" cy="11" r="3"/>
-                </svg>
-              </div>
-            </div>
-            <span class="text-xl font-bold gradient-text">SmartQuiz</span>
+          <a routerLink="/" data-testid="header-logo">
+            <app-logo size="sm" [showText]="true"></app-logo>
           </a>
 
           <!-- Navigation Desktop -->
