@@ -60,15 +60,15 @@ export class QuizCatalogComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.catalogState.setFilters({ search: this.searchInput });
+    this.catalogState.setFilter('search', this.searchInput);
   }
 
   onCategorySelect(categoryId: string | null): void {
-    this.catalogState.setFilters({ categoryId });
+    this.catalogState.setFilter('categoryId', categoryId);
   }
 
   onDifficultySelect(difficulty: 'EASY' | 'MEDIUM' | 'HARD' | null): void {
-    this.catalogState.setFilters({ difficulty });
+    this.catalogState.setFilter('difficulty', difficulty);
   }
 
   onClearFilters(): void {
@@ -77,7 +77,8 @@ export class QuizCatalogComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    this.catalogState.loadMoreQuizzes();
+    const nextPage = this.catalogState.currentPage() + 1;
+    this.catalogState.loadQuizzes(nextPage);
   }
 
   getDifficultyVariant(difficulty: string): 'success' | 'warning' | 'error' {
