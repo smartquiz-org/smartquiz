@@ -1,17 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CatalogStateService } from '../services/catalog-state.service';
-import { BadgeComponent } from '@shared/components/ui/badge.component';
 import { LoaderComponent } from '@shared/components/ui/loader.component';
+import { BadgeComponent } from '@shared/components/ui/badge.component';
 
 /**
- * Smart Component: Quiz Catalog Container
- * Responsibilities:
- * - Orchestrates state loading via CatalogStateService
- * - Handles user interactions (search, filter)
- * - Delegates presentation to template
+ * Quiz Catalog Component - Updated design matching smartquiz-template
  */
 @Component({
   selector: 'app-quiz-catalog',
@@ -20,33 +16,59 @@ import { LoaderComponent } from '@shared/components/ui/loader.component';
     CommonModule,
     RouterLink,
     FormsModule,
-    BadgeComponent,
-    LoaderComponent
+    LoaderComponent,
+    BadgeComponent
   ],
   templateUrl: './quiz-catalog.component.html',
   styleUrl: './quiz-catalog.component.scss'
 })
 export class QuizCatalogComponent implements OnInit {
   readonly catalogState = inject(CatalogStateService);
+  private readonly route = inject(ActivatedRoute);
 
-  // Local UI state
   searchInput = '';
+  viewMode: 'grid' | 'list' = 'grid';
+
+  // Static categories for display when API returns empty
+  staticCategories = [
+    { id: '1', name: 'Science', icon: '🔬' },
+    { id: '2', name: 'History', icon: '📜' },
+    { id: '3', name: 'Mathematics', icon: '📐' },
+    { id: '4', name: 'Geography', icon: '🌍' },
+    { id: '5', name: 'Technology', icon: '💻' },
+    { id: '6', name: 'Literature', icon: '📚' },
+    { id: '7', name: 'Art', icon: '🎨' },
+    { id: '8', name: 'Music', icon: '🎵' },
+    { id: '9', name: 'Sports', icon: '⚽' }
+  ];
 
   ngOnInit(): void {
+    // Check for category from query params
+    this.route.queryParams.subscribe(params => {
+      if (params['category']) {
+        const category = this.staticCategories.find(
+          c => c.name.toLowerCase() === params['category'].toLowerCase()
+        );
+        if (category) {
+          this.onCategorySelect(category.id);
+        }
+      }
+    });
+
     this.catalogState.loadCategories();
     this.catalogState.loadQuizzes();
   }
 
   onSearch(): void {
-    this.catalogState.setFilter('search', this.searchInput);
+    this.catalogState.setFilters({ search: this.searchInput });
   }
 
   onCategorySelect(categoryId: string | null): void {
-    this.catalogState.setFilter('categoryId', categoryId);
+    this.catalogState.setFilters({ categoryId });
   }
 
-  onDifficultySelect(difficulty: string | null): void {
-    this.catalogState.setFilter('difficulty', difficulty as any);
+  onDifficultySelect(difficulty: 'EASY' | 'MEDIUM' | 'HARD' | null): void {
+    this.catalogState.setFilters({ difficulty });
   }
 
   onClearFilters(): void {
@@ -55,24 +77,24 @@ export class QuizCatalogComponent implements OnInit {
   }
 
   onLoadMore(): void {
-    this.catalogState.loadQuizzes(this.catalogState.currentPage() + 1);
-  }
-
-  getDifficultyLabel(difficulty: string): string {
-    const labels: Record<string, string> = {
-      EASY: 'Facile',
-      MEDIUM: 'Moyen',
-      HARD: 'Difficile'
-    };
-    return labels[difficulty] || difficulty;
+    this.catalogState.loadMoreQuizzes();
   }
 
   getDifficultyVariant(difficulty: string): 'success' | 'warning' | 'error' {
-    const variants: Record<string, 'success' | 'warning' | 'error'> = {
-      EASY: 'success',
-      MEDIUM: 'warning',
-      HARD: 'error'
-    };
-    return variants[difficulty] || 'warning';
+    switch (difficulty) {
+      case 'EASY': return 'success';
+      case 'MEDIUM': return 'warning';
+      case 'HARD': return 'error';
+      default: return 'success';
+    }
+  }
+
+  getDifficultyLabel(difficulty: string): string {
+    switch (difficulty) {
+      case 'EASY': return 'Easy';
+      case 'MEDIUM': return 'Medium';
+      case 'HARD': return 'Hard';
+      default: return difficulty;
+    }
   }
 }
