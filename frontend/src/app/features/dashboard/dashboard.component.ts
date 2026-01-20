@@ -6,7 +6,6 @@ import { QuizSummary, UserStats } from '@features/quiz/models';
 import { CardComponent } from '@shared/components/ui/card.component';
 import { BadgeComponent } from '@shared/components/ui/badge.component';
 import { LoaderComponent } from '@shared/components/ui/loader.component';
-import { ButtonComponent } from '@shared/components/ui/button.component';
 
 /**
  * Smart Component: Dashboard
@@ -20,8 +19,7 @@ import { ButtonComponent } from '@shared/components/ui/button.component';
     RouterLink,
     CardComponent,
     BadgeComponent,
-    LoaderComponent,
-    ButtonComponent
+    LoaderComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

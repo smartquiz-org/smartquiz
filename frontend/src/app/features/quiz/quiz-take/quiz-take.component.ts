@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuizSessionService } from '../services/quiz-session.service';
 import { ButtonComponent } from '@shared/components/ui/button.component';
-import { CardComponent } from '@shared/components/ui/card.component';
 import { LoaderComponent } from '@shared/components/ui/loader.component';
 import { AlertComponent } from '@shared/components/ui/alert.component';
-import { BadgeComponent } from '@shared/components/ui/badge.component';
 import { ProgressRingComponent } from '@shared/components/ui/progress-ring.component';
+import { LogoComponent } from '@shared/components/logo/logo.component';
 
 /**
  * Smart Component: Quiz Taking Interface
@@ -20,11 +19,10 @@ import { ProgressRingComponent } from '@shared/components/ui/progress-ring.compo
   imports: [
     CommonModule,
     ButtonComponent,
-    CardComponent,
     LoaderComponent,
     AlertComponent,
-    BadgeComponent,
-    ProgressRingComponent
+    ProgressRingComponent,
+    LogoComponent
   ],
   templateUrl: './quiz-take.component.html',
   styleUrl: './quiz-take.component.scss'

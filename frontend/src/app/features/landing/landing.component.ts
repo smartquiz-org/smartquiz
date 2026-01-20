@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LandingHeaderComponent } from './landing-header.component';
 import { LandingFooterComponent } from './landing-footer.component';
+import { LogoComponent } from '@shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterLink, LandingHeaderComponent, LandingFooterComponent],
+  imports: [CommonModule, RouterLink, LandingHeaderComponent, LandingFooterComponent, LogoComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
