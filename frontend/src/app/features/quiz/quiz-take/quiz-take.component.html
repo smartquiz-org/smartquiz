@@ -1,4 +1,4 @@
-<div class="quiz-take-container" data-testid="quiz-take">
+<div class="quiz-take-page" data-testid="quiz-take">
   <!-- Loading -->
   @if (loading()) {
     <div class="loading-state">
@@ -21,186 +21,199 @@
   <!-- Quiz Interface -->
   @if (attempt() && currentQuestion() && !loading()) {
     <div class="quiz-interface">
-      <!-- Top Bar -->
-      <header class="quiz-header">
-        <div class="header-left">
-          <h1 class="quiz-title">{{ attempt()?.quizTitle }}</h1>
-          <span class="quiz-mode">
-            @if (isTrainingMode()) {
-              <span class="mode-badge training">🎯 Entraînement</span>
-            } @else {
-              <span class="mode-badge exam">📝 Examen</span>
-            }
-          </span>
+      <!-- Top Header Bar -->
+      <header class="quiz-top-header">
+        <div class="header-left-section">
+          <div class="quiz-logo">
+            <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a9 9 0 0 1 9 9c0 3.074-1.676 5.59-3.442 7.395a20.441 20.441 0 0 1-2.876 2.416l-.426.29a3 3 0 0 1-4.512 0l-.426-.29a20.441 20.441 0 0 1-2.876-2.416C4.676 16.59 3 14.074 3 11a9 9 0 0 1 9-9z"/>
+              <circle cx="12" cy="11" r="3"/>
+            </svg>
+          </div>
+          <div class="quiz-info">
+            <h1 class="quiz-title">{{ attempt()?.quizTitle }}</h1>
+            <span class="quiz-progress-text">Question {{ currentQuestionIndex() + 1 }} sur {{ totalQuestions() }}</span>
+          </div>
         </div>
         
-        <div class="header-right">
-          <!-- Timer -->
-          @if (attempt()?.timeLimit && attempt()!.timeLimit > 0) {
-            <div class="timer" [class.critical]="isTimeCritical()" data-testid="timer">
-              <svg class="timer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        <div class="header-right-section">
+          <!-- Mode Badge -->
+          @if (isTrainingMode()) {
+            <div class="mode-badge training" data-testid="mode-badge">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4l3 3"/>
               </svg>
-              <span class="timer-value">{{ formattedTime() }}</span>
+              Entraînement
+            </div>
+          } @else {
+            <div class="mode-badge exam" data-testid="mode-badge">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              Examen
             </div>
           }
-          
-          <!-- Quit Button -->
-          <button class="quit-button" (click)="onQuitQuiz()" data-testid="quit-button">
-            <svg class="quit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
         </div>
       </header>
 
       <!-- Progress Bar -->
-      <div class="progress-container">
+      <div class="progress-bar-container">
         <div class="progress-bar">
           <div class="progress-fill" [style.width.%]="progress()"></div>
         </div>
-        <div class="progress-text">
-          Question {{ currentQuestionIndex() + 1 }} / {{ totalQuestions() }}
-        </div>
       </div>
 
-      <!-- Question Card -->
-      <div class="question-section">
-        <ui-card variant="default" testId="question-card">
-          <!-- Question Header -->
-          <div class="question-header">
-            <span class="question-number">Question {{ currentQuestionIndex() + 1 }}</span>
-            <ui-badge variant="info" size="sm">
-              {{ getQuestionTypeLabel(currentQuestion()!.type) }}
-            </ui-badge>
-            <span class="question-points">{{ currentQuestion()?.points }} pts</span>
-          </div>
+      <!-- Question Card Area -->
+      <main class="question-main-area">
+        <div class="question-card glass-strong">
+          
+          <!-- Timer Ring -->
+          @if (attempt()?.timeLimit && attempt()!.timeLimit > 0) {
+            <div class="timer-section">
+              <ui-progress-ring 
+                [progress]="timerProgress()"
+                [size]="90"
+                [strokeWidth]="6"
+                [variant]="isTimeCritical() ? 'destructive' : 'primary'">
+                <div class="timer-content">
+                  <svg class="timer-icon" [class.text-error]="isTimeCritical()" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                  <span class="timer-value" [class.text-error]="isTimeCritical()">{{ formattedTime() }}</span>
+                </div>
+              </ui-progress-ring>
+            </div>
+          }
 
           <!-- Question Text -->
-          <div class="question-content">
-            <p class="question-text">{{ currentQuestion()?.text }}</p>
+          <div class="question-text-section">
+            <h2 class="question-text">{{ currentQuestion()?.text }}</h2>
             
             @if (currentQuestion()?.imageUrl) {
               <img [src]="currentQuestion()?.imageUrl" alt="Question image" class="question-image" />
             }
           </div>
 
-          <!-- Answers -->
-          <div class="answers-container">
-            @if (currentQuestion()?.type === 'MULTIPLE_CHOICE') {
-              <p class="answer-hint">Sélectionnez toutes les bonnes réponses</p>
-            }
-            
-            <div class="answers-list">
-              @for (answer of currentQuestion()?.answers; track answer.id) {
-                <button 
-                  class="answer-option" 
-                  [class]="getAnswerClass(answer.id)"
-                  [disabled]="showFeedback()"
-                  (click)="onSelectAnswer(answer.id)"
-                  [attr.data-testid]="'answer-' + answer.id">
-                  <div class="answer-marker">
-                    @if (currentQuestion()?.type === 'MULTIPLE_CHOICE') {
-                      <div class="checkbox" [class.checked]="isAnswerSelected(answer.id)">
-                        @if (isAnswerSelected(answer.id)) {
-                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                          </svg>
-                        }
-                      </div>
-                    } @else {
-                      <div class="radio" [class.checked]="isAnswerSelected(answer.id)">
-                        @if (isAnswerSelected(answer.id)) {
-                          <div class="radio-dot"></div>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <span class="answer-text">{{ answer.text }}</span>
-                  
-                  @if (answer.imageUrl) {
-                    <img [src]="answer.imageUrl" alt="Answer image" class="answer-image" />
+          <!-- Answers Grid - 2x2 layout -->
+          <div class="answers-grid">
+            @for (answer of currentQuestion()?.answers; track answer.id; let i = $index) {
+              <button 
+                class="answer-card" 
+                [class]="getAnswerClass(answer.id)"
+                [disabled]="showFeedback()"
+                (click)="onSelectAnswer(answer.id)"
+                [attr.data-testid]="'answer-' + answer.id">
+                
+                <!-- Answer Letter Badge -->
+                <span class="answer-letter" 
+                      [class.selected]="isAnswerSelected(answer.id)"
+                      [class.correct]="showFeedback() && lastFeedback()?.correctAnswerIds?.includes(answer.id)"
+                      [class.incorrect]="showFeedback() && lastFeedback()?.selectedAnswerIds?.includes(answer.id) && !lastFeedback()?.correctAnswerIds?.includes(answer.id)">
+                  {{ getAnswerLetter(i) }}
+                </span>
+                
+                <!-- Answer Text -->
+                <span class="answer-text">{{ answer.text }}</span>
+                
+                <!-- Feedback Icons -->
+                @if (showFeedback() && lastFeedback()) {
+                  @if (lastFeedback()?.correctAnswerIds?.includes(answer.id)) {
+                    <svg class="feedback-icon correct" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                  } @else if (lastFeedback()?.selectedAnswerIds?.includes(answer.id)) {
+                    <svg class="feedback-icon incorrect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="15" y1="9" x2="9" y2="15"/>
+                      <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
                   }
-                </button>
-              }
-            </div>
+                }
+                
+                @if (answer.imageUrl) {
+                  <img [src]="answer.imageUrl" alt="Answer image" class="answer-image" />
+                }
+              </button>
+            }
           </div>
 
-          <!-- Feedback (Training Mode) -->
-          @if (showFeedback() && lastFeedback()) {
-            <div class="feedback-section" data-testid="feedback">
-              <ui-alert [variant]="lastFeedback()!.correct ? 'success' : 'error'">
-                <strong>{{ lastFeedback()!.correct ? 'Correct !' : 'Incorrect' }}</strong>
-                <span class="feedback-points">(+{{ lastFeedback()!.pointsEarned }} pts)</span>
-              </ui-alert>
-              
+          <!-- Feedback Message (Training Mode) -->
+          @if (showFeedback() && lastFeedback() && isTrainingMode()) {
+            <div class="feedback-message" [class.correct]="lastFeedback()!.correct" [class.incorrect]="!lastFeedback()!.correct" data-testid="feedback">
+              <div class="feedback-header">
+                @if (lastFeedback()!.correct) {
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                  <span>Correct !</span>
+                } @else {
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="15" y1="9" x2="9" y2="15"/>
+                    <line x1="9" y1="9" x2="15" y2="15"/>
+                  </svg>
+                  <span>Incorrect</span>
+                }
+              </div>
               @if (lastFeedback()?.explanation) {
-                <div class="explanation">
-                  <h4 class="explanation-title">Explication</h4>
-                  <p class="explanation-text">{{ lastFeedback()?.explanation }}</p>
-                </div>
+                <p class="feedback-explanation">{{ lastFeedback()?.explanation }}</p>
               }
             </div>
           }
-        </ui-card>
-      </div>
-
-      <!-- Navigation -->
-      <footer class="quiz-footer">
-        <div class="nav-left">
-          @if (isExamMode()) {
-            <ui-button 
-              variant="secondary" 
-              [disabled]="currentQuestionIndex() === 0"
-              (clicked)="onPreviousQuestion()">
-              <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              Précédent
-            </ui-button>
-          }
-          
-          <button class="question-nav-toggle" (click)="toggleQuestionNav()">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-            </svg>
-            Questions
-          </button>
         </div>
+      </main>
 
-        <div class="nav-right">
+      <!-- Bottom Navigation -->
+      <footer class="quiz-bottom-nav">
+        <button class="nav-btn quit-btn" (click)="onQuitQuiz()" data-testid="quit-button">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 19l-7-7 7-7"/>
+          </svg>
+          Quitter
+        </button>
+
+        <div class="nav-right-actions">
           @if (showFeedback()) {
-            <!-- After feedback in training mode -->
             @if (isLastQuestion()) {
-              <ui-button variant="primary" (clicked)="onFinishQuiz()" testId="finish-button">
+              <button class="nav-btn primary-btn" (click)="onFinishQuiz()" data-testid="finish-button">
                 Voir les résultats
-              </ui-button>
-            } @else {
-              <ui-button variant="primary" (clicked)="onNextQuestion()" testId="next-button">
-                Question suivante
-                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="7"/>
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
                 </svg>
-              </ui-button>
+              </button>
+            } @else {
+              <button class="nav-btn primary-btn" (click)="onNextQuestion()" data-testid="next-button">
+                Question suivante
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
             }
           } @else {
-            <!-- Submit answer -->
-            <ui-button 
-              variant="primary" 
-              [loading]="submitting()"
-              [disabled]="!canSubmitAnswer()"
-              (clicked)="onSubmitAnswer()"
-              testId="submit-answer-button">
-              @if (isExamMode() && isLastQuestion()) {
-                Terminer le quiz
-              } @else if (isExamMode()) {
-                Suivant
+            <button 
+              class="nav-btn primary-btn"
+              [disabled]="!canSubmitAnswer() || submitting()"
+              (click)="onSubmitAnswer()"
+              data-testid="submit-answer-button">
+              @if (submitting()) {
+                <ui-loader size="sm" />
               } @else {
                 Valider
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 8v4l3 3"/>
+                </svg>
               }
-            </ui-button>
+            </button>
           }
         </div>
       </footer>
@@ -220,11 +233,6 @@
                   {{ i + 1 }}
                 </button>
               }
-            </div>
-            <div class="nav-legend">
-              <span class="legend-item"><span class="dot current"></span> Actuelle</span>
-              <span class="legend-item"><span class="dot answered"></span> Répondue</span>
-              <span class="legend-item"><span class="dot"></span> Non répondue</span>
             </div>
           </div>
         </div>

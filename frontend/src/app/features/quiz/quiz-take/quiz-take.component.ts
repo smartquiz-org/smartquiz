@@ -1,4 +1,4 @@
-import { Component, Input, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, inject, OnInit, OnDestroy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuizSessionService } from '../services/quiz-session.service';
@@ -7,10 +7,12 @@ import { CardComponent } from '@shared/components/ui/card.component';
 import { LoaderComponent } from '@shared/components/ui/loader.component';
 import { AlertComponent } from '@shared/components/ui/alert.component';
 import { BadgeComponent } from '@shared/components/ui/badge.component';
+import { ProgressRingComponent } from '@shared/components/ui/progress-ring.component';
 
 /**
  * Smart Component: Quiz Taking Interface
  * Handles the active quiz session with questions, timer, and navigation
+ * Design based on SmartQuiz template with dark theme
  */
 @Component({
   selector: 'app-quiz-take',
@@ -21,7 +23,8 @@ import { BadgeComponent } from '@shared/components/ui/badge.component';
     CardComponent,
     LoaderComponent,
     AlertComponent,
-    BadgeComponent
+    BadgeComponent,
+    ProgressRingComponent
   ],
   templateUrl: './quiz-take.component.html',
   styleUrl: './quiz-take.component.scss'
@@ -54,6 +57,19 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
 
   // UI State
   showQuestionNav = false;
+
+  // Timer progress for the ring (0-100)
+  timerProgress = computed(() => {
+    const attempt = this.attempt();
+    const timeRemaining = this.timeRemaining();
+    
+    if (!attempt?.timeLimit || attempt.timeLimit <= 0) return 100;
+    
+    // Calculate progress based on time remaining vs total time (in seconds)
+    const totalSeconds = attempt.timeLimit * 60; // timeLimit is in minutes
+    const progress = (timeRemaining / totalSeconds) * 100;
+    return Math.max(0, Math.min(100, progress));
+  });
 
   ngOnInit(): void {
     if (this.attemptId) {
@@ -93,13 +109,13 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
   }
 
   onFinishQuiz(): void {
-    if (confirm('\u00cates-vous s\u00fbr de vouloir terminer le quiz ?')) {
+    if (confirm('Êtes-vous sûr de vouloir terminer le quiz ?')) {
       this.session.finishQuiz();
     }
   }
 
   onQuitQuiz(): void {
-    if (confirm('\u00cates-vous s\u00fbr de vouloir quitter ? Votre progression sera sauvegard\u00e9e.')) {
+    if (confirm('Êtes-vous sûr de vouloir quitter ? Votre progression sera sauvegardée.')) {
       this.router.navigate(['/quizzes']);
     }
   }
@@ -116,6 +132,10 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
       IMAGE: 'Question image'
     };
     return labels[type] || type;
+  }
+
+  getAnswerLetter(index: number): string {
+    return String.fromCharCode(65 + index); // A, B, C, D...
   }
 
   getAnswerClass(answerId: string): string {
