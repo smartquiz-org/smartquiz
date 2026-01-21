@@ -24,7 +24,7 @@
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.0",
     "express": "^4.21.0",
-    "lucide-angular": "^0.469.0",
+    "lucide-angular": "^0.470.0",
     "ngx-markdown": "^18.0.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.0",
